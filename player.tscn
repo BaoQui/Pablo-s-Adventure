@@ -161,7 +161,7 @@ position = Vector2(159, 94)
 scale = Vector2(2.47984, 2.54137)
 
 [node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(-40.7284, 60.2037)
+position = Vector2(-44.761, 28.7247)
 scale = Vector2(0.357132, 0.367257)
 script = ExtResource("1_4flbx")
 deceleration = 6000.0
@@ -188,8 +188,15 @@ position = Vector2(-3.58133, -8.70384)
 scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
 
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(141.143, 43.9285)
+scale = Vector2(1, 1)
+zoom = Vector2(1.5, 1.5)
+limit_top = 0
+limit_bottom = 0
+
 [node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(37.0991, 70.0409)
+position = Vector2(-1.61301, 37.7749)
 scale = Vector2(0.31453, 0.239012)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
@@ -197,7 +204,7 @@ position = Vector2(1, 0)
 shape = SubResource("WorldBoundaryShape2D_onrkg")
 
 [node name="Dummy" type="CharacterBody2D" parent="."]
-position = Vector2(116.943, 58.6298)
+position = Vector2(55.2455, 26.3637)
 scale = Vector2(0.901565, 0.901565)
 script = ExtResource("3_sweqy")
 
