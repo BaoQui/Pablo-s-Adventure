@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=48 format=3 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://dxoy7p0xhnjag" path="res://Individual Sprite/Dash/Warrior_Dash_1.png" id="2_331ug"]
@@ -40,7 +40,7 @@
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
-[ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
+[ext_resource type="Script" path="res://character_body_2d.gd" id="41_ny14h"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xry5e"]
 animations = [{
@@ -228,17 +228,12 @@ position = Vector2(-3.58133, -8.70384)
 scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(140.013, -32.1429)
-zoom = Vector2(1.5, 1.5)
-limit_top = 0
-limit_bottom = 0
-
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(-1.61301, 37.7749)
 scale = Vector2(0.31453, 0.239012)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+modulate = Color(0.583442, 0.55379, 0.280108, 1)
 position = Vector2(19.2312, -162.985)
 rotation = 3.14159
 shape = SubResource("WorldBoundaryShape2D_onrkg")
@@ -248,13 +243,12 @@ position = Vector2(16.667, -146.522)
 shape = SubResource("WorldBoundaryShape2D_onrkg")
 
 [node name="Left_wall" type="CollisionShape2D" parent="Floor"]
-position = Vector2(-252.569, -158.046)
-scale = Vector2(1, 1)
+modulate = Color(0.666667, 0.145098, 0.462745, 1)
+position = Vector2(-207.697, -149.814)
 shape = SubResource("RectangleShape2D_331ug")
 
 [node name="Right_Wall" type="CollisionShape2D" parent="Floor"]
-position = Vector2(319.237, -156.4)
-scale = Vector2(1, 1)
+position = Vector2(248.723, -156.4)
 shape = SubResource("RectangleShape2D_331ug")
 
 [node name="Dummy" type="CharacterBody2D" parent="."]
@@ -297,5 +291,13 @@ shape = SubResource("RectangleShape2D_2hs0m")
 wait_time = 2.5
 one_shot = true
 autostart = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+modulate = Color(0.895935, 0, 0.317969, 1)
+position = Vector2(4.83902, 16.5265)
+scale = Vector2(0.357132, 0.367257)
+zoom = Vector2(1.5, 1.5)
+limit_top = 0
+limit_bottom = 0
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]

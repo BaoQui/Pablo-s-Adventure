@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://d4fic8yrcyaxq"]
 
 [ext_resource type="Script" uid="uid://beswm2wibrg55" path="res://main_menu.gd" id="1_06t4h"]
-[ext_resource type="Script" uid="uid://cl3d70rt0yylt" path="res://parallax_background.gd" id="2_glbon"]
+[ext_resource type="Script" path="res://parallax_background.gd" id="2_glbon"]
 [ext_resource type="Texture2D" uid="uid://dg1sng1gg0whq" path="res://Assets/game_background_1/layers/sky.png" id="2_jix8l"]
 [ext_resource type="Texture2D" uid="uid://hngjl8o6j8sh" path="res://Assets/game_background_1/layers/rocks_2.png" id="3_glbon"]
 [ext_resource type="Texture2D" uid="uid://82781juolxdl" path="res://Assets/game_background_1/layers/rocks_1.png" id="4_nlkkf"]
