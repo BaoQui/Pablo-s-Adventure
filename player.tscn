@@ -40,6 +40,7 @@
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
+[ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xry5e"]
 animations = [{
@@ -281,5 +282,20 @@ offset_right = -59.6813
 offset_bottom = -34.627
 scale = Vector2(0.31, 0.31)
 script = ExtResource("33_hiqhm")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+script = ExtResource("41_ny14h")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+scale = Vector2(0.16319, 0.177116)
+texture = ExtResource("2_onrkg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="CharacterBody2D"]
+wait_time = 2.5
+one_shot = true
+autostart = true
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]
