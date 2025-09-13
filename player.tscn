@@ -191,7 +191,6 @@ shape = SubResource("CapsuleShape2D_2hs0m")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(141.143, 43.9285)
-scale = Vector2(1, 1)
 zoom = Vector2(1.5, 1.5)
 limit_top = 0
 limit_bottom = 0
@@ -215,6 +214,11 @@ texture = ExtResource("2_onrkg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Dummy"]
 shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="Dummy"]
+wait_time = 2.5
+one_shot = true
+autostart = true
 
 [node name="PauseMenu" parent="." instance=ExtResource("37_b88wv")]
 visible = false
