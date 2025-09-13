@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=47 format=3 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://dxoy7p0xhnjag" path="res://Individual Sprite/Dash/Warrior_Dash_1.png" id="2_331ug"]
@@ -188,6 +188,10 @@ radius = 6.31849
 height = 33.3141
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_onrkg"]
+distance = -149.814
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_331ug"]
+size = Vector2(15.3849, 419.81)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hs0m"]
 
@@ -215,7 +219,7 @@ scale = Vector2(1.28571, 0.773005)
 shape = SubResource("CapsuleShape2D_sweqy")
 
 [node name="PunchHitbox" type="Area2D" parent="Player"]
-position = Vector2(28, 3)
+position = Vector2(28.2286, 3.21418)
 scale = Vector2(3.71964, 0.96015)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/PunchHitbox"]
@@ -224,7 +228,7 @@ scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(141.143, 43.9285)
+position = Vector2(140.013, -32.1429)
 zoom = Vector2(1.5, 1.5)
 limit_top = 0
 limit_bottom = 0
@@ -234,8 +238,23 @@ position = Vector2(-1.61301, 37.7749)
 scale = Vector2(0.31453, 0.239012)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
-position = Vector2(1, 0)
+position = Vector2(19.2312, -162.985)
+rotation = 3.14159
 shape = SubResource("WorldBoundaryShape2D_onrkg")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Floor"]
+position = Vector2(16.667, -146.522)
+shape = SubResource("WorldBoundaryShape2D_onrkg")
+
+[node name="Left_wall" type="CollisionShape2D" parent="Floor"]
+position = Vector2(-252.569, -158.046)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_331ug")
+
+[node name="Right_Wall" type="CollisionShape2D" parent="Floor"]
+position = Vector2(319.237, -156.4)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_331ug")
 
 [node name="Dummy" type="CharacterBody2D" parent="."]
 position = Vector2(55.2455, 26.3637)
