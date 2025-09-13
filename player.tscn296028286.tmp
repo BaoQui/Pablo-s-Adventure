@@ -1,22 +1,15 @@
-[gd_scene load_steps=46 format=3 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=39 format=3 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
-[ext_resource type="Texture2D" uid="uid://dxoy7p0xhnjag" path="res://Individual Sprite/Dash/Warrior_Dash_1.png" id="2_331ug"]
 [ext_resource type="Texture2D" uid="uid://c1h5hxuv6aq7x" path="res://Individual Sprite/idle/Warrior_Idle_1.png" id="2_efrwb"]
 [ext_resource type="Texture2D" uid="uid://dv6ctc6fhyg6u" path="res://icon.svg" id="2_onrkg"]
 [ext_resource type="Texture2D" uid="uid://bucp1eywy5d01" path="res://Individual Sprite/idle/Warrior_Idle_2.png" id="3_hiqhm"]
-[ext_resource type="Texture2D" uid="uid://e8utffg0cvvx" path="res://Individual Sprite/Dash/Warrior_Dash_2.png" id="3_ny14h"]
 [ext_resource type="Script" uid="uid://mom5b183pa1p" path="res://dummy.gd" id="3_sweqy"]
-[ext_resource type="Texture2D" uid="uid://2fq7gn75diu2" path="res://Individual Sprite/Dash/Warrior_Dash_3.png" id="4_ibah8"]
 [ext_resource type="Texture2D" uid="uid://bagafgx07gep6" path="res://Individual Sprite/idle/Warrior_Idle_3.png" id="4_tkwlq"]
-[ext_resource type="Texture2D" uid="uid://bowgwmbjmuxec" path="res://Individual Sprite/Dash/Warrior_Dash_4.png" id="5_3iwfv"]
 [ext_resource type="Texture2D" uid="uid://bxkpcljjm7odw" path="res://Individual Sprite/idle/Warrior_Idle_4.png" id="5_hl5qd"]
 [ext_resource type="Texture2D" uid="uid://dku7nhd61q31d" path="res://Individual Sprite/idle/Warrior_Idle_5.png" id="6_ek41f"]
-[ext_resource type="Texture2D" uid="uid://dj5380fn3k1ml" path="res://Individual Sprite/Dash/Warrior_Dash_5.png" id="6_qwsg1"]
-[ext_resource type="Texture2D" uid="uid://dvub2avwflo30" path="res://Individual Sprite/Dash/Warrior_Dash_6.png" id="7_1xqrm"]
 [ext_resource type="Texture2D" uid="uid://dbxq01n4dyhav" path="res://Individual Sprite/idle/Warrior_Idle_6.png" id="7_khis8"]
 [ext_resource type="Texture2D" uid="uid://b6i3lm41l1bro" path="res://Individual Sprite/Jump/Warrior_Jump_1.png" id="8_b88wv"]
-[ext_resource type="Texture2D" uid="uid://bnyu42ufcipt" path="res://Individual Sprite/Dash/Warrior_Dash_7.png" id="8_bfour"]
 [ext_resource type="Texture2D" uid="uid://vc10ddb2twas" path="res://Individual Sprite/Fall/Warrior_Fall_1.png" id="8_hl5qd"]
 [ext_resource type="Texture2D" uid="uid://m2br88d3qqmf" path="res://Individual Sprite/Fall/Warrior_Fall_2.png" id="9_ek41f"]
 [ext_resource type="Texture2D" uid="uid://ba40080iltt6x" path="res://Individual Sprite/Jump/Warrior_Jump_2.png" id="9_pgbbb"]
@@ -38,37 +31,11 @@
 [ext_resource type="Texture2D" uid="uid://c6nw2xnyq4jq3" path="res://Individual Sprite/Run/Warrior_Run_6.png" id="28_ygbnx"]
 [ext_resource type="Texture2D" uid="uid://nkawfcwdw7s0" path="res://Individual Sprite/Run/Warrior_Run_7.png" id="29_v2t6f"]
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
-[ext_resource type="Script" path="res://inventory.gd" id="33_hiqhm"]
+[ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xry5e"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_331ug")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_ny14h")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_ibah8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_3iwfv")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_qwsg1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_1xqrm")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_bfour")
-}],
-"loop": true,
-"name": &"dash",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("8_hl5qd")
@@ -199,14 +166,26 @@ scale = Vector2(2.47984, 2.54137)
 position = Vector2(-44.761, 28.7247)
 scale = Vector2(0.357132, 0.367257)
 script = ExtResource("1_4flbx")
+move_speed = null
+acceleration = null
 deceleration = 6000.0
 jump_force = 400.0
 gravity = 800.0
+fall_multiplier = null
+coyote_time = null
+jump_cut_multiplier = null
+dash_speed = null
+dash_duration = null
+dash_cooldown = null
+punch_damage = null
+punch_cooldown = null
+punch_duration = null
+air_punch_push = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(6.77475, -4.28557)
 sprite_frames = SubResource("SpriteFrames_xry5e")
-animation = &"fall"
+animation = &"punch"
 speed_scale = 30.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]

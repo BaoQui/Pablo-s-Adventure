@@ -13,7 +13,7 @@ extends CharacterBody2D
 # --- Dash settings ---
 @export var dash_speed: float = 600.0
 @export var dash_duration: float = 0.2
-@export var dash_cooldown: float = 1.0
+# (Removed cooldown entirely)
 
 # --- Punch settings ---
 @export var punch_damage: int = 10
@@ -27,7 +27,7 @@ extends CharacterBody2D
 var punch_timer: float = 0.0
 var coyote_timer: float = 0.0
 var dash_timer: float = 0.0
-var dash_cooldown_timer: float = 0.0
+# var dash_cooldown_timer: float = 0.0   # REMOVED
 var current_animation: String = "idle"
 var is_dashing: bool = false
 var is_punching: bool = false
@@ -35,6 +35,9 @@ var is_punching: bool = false
 # --- Air attack freeze ---
 var freeze_velocity: bool = false
 var stored_velocity: Vector2 = Vector2.ZERO
+
+# --- Dash availability (resets on ground) ---
+var can_dash: bool = true
 
 func _ready() -> void:
 	punch_hitbox.monitoring = false
@@ -49,7 +52,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	punch_timer -= delta
 	dash_timer -= delta
-	dash_cooldown_timer -= delta
+	# dash_cooldown_timer -= delta   # REMOVED
 	
 	var input_dir := Input.get_axis("ui_left", "ui_right")
 	
@@ -80,9 +83,10 @@ func _physics_process(delta: float) -> void:
 			else:
 				velocity.y += gravity * delta
 
-	# --- Coyote time ---
+	# --- Coyote time & dash reset on ground ---
 	if is_on_floor():
 		coyote_timer = coyote_time
+		can_dash = true     # reset dash when grounded
 	else:
 		coyote_timer -= delta
 
@@ -100,10 +104,12 @@ func _physics_process(delta: float) -> void:
 		punch()
 		punch_timer = punch_cooldown
 
-	# --- Dash (Shift key) ---
-	if Input.is_action_just_pressed("ui_dash") and dash_cooldown_timer <= 0.0 and not is_dashing and not is_punching:
+	# --- Dash (Shift key, once per airtime) ---
+	# Make sure you created InputMap action "ui_dash" bound to Shift.
+	if Input.is_action_just_pressed("ui_dash") and can_dash and not is_dashing and not is_punching:
 		var dir = 1 if not anim.flip_h else -1
 		start_dash(dir)
+		can_dash = false  # consume dash until you land again
 
 	update_animation(input_dir)
 	move_and_slide()
@@ -141,14 +147,14 @@ func _on_punch_hitbox_body_entered(body: Node) -> void:
 	if body.has_method("take_damage"):
 		body.take_damage(punch_damage)
 
-
 func start_dash(input_dir: float) -> void:
 	if input_dir == 0:
 		input_dir = 1 if not anim.flip_h else -1
 	is_dashing = true
 	dash_timer = dash_duration
-	dash_cooldown_timer = dash_cooldown
 	velocity.x = input_dir * dash_speed
+	# optional: flatten vertical velocity for a cleaner burst
+	# velocity.y = 0
 	play_animation("dash", 2.0)
 
 func end_dash() -> void:
@@ -186,4 +192,4 @@ func punch() -> void:
 		is_punching = false
 		if freeze_velocity:
 			freeze_velocity = false
-	)
+)
