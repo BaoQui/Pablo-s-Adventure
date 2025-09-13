@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=39 format=3 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://c1h5hxuv6aq7x" path="res://Individual Sprite/idle/Warrior_Idle_1.png" id="2_efrwb"]
@@ -31,6 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://c6nw2xnyq4jq3" path="res://Individual Sprite/Run/Warrior_Run_6.png" id="28_ygbnx"]
 [ext_resource type="Texture2D" uid="uid://nkawfcwdw7s0" path="res://Individual Sprite/Run/Warrior_Run_7.png" id="29_v2t6f"]
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
+[ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xry5e"]
@@ -191,7 +192,6 @@ shape = SubResource("CapsuleShape2D_2hs0m")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(141.143, 43.9285)
-scale = Vector2(1, 1)
 zoom = Vector2(1.5, 1.5)
 limit_top = 0
 limit_bottom = 0
@@ -223,5 +223,6 @@ offset_top = -34.627
 offset_right = -59.6813
 offset_bottom = -34.627
 scale = Vector2(0.31, 0.31)
+script = ExtResource("33_hiqhm")
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]

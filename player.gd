@@ -100,6 +100,11 @@ func _physics_process(delta: float) -> void:
 		punch()
 		punch_timer = punch_cooldown
 
+	# --- Dash (Shift key) ---
+	if Input.is_action_just_pressed("ui_dash") and dash_cooldown_timer <= 0.0 and not is_dashing and not is_punching:
+		var dir = 1 if not anim.flip_h else -1
+		start_dash(dir)
+
 	update_animation(input_dir)
 	move_and_slide()
 
