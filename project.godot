@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Movement Test"
-run/main_scene="uid://b4x3q61v00dwr"
+run/main_scene="uid://d4fic8yrcyaxq"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
