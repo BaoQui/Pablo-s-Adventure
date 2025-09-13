@@ -31,7 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://c6nw2xnyq4jq3" path="res://Individual Sprite/Run/Warrior_Run_6.png" id="28_ygbnx"]
 [ext_resource type="Texture2D" uid="uid://nkawfcwdw7s0" path="res://Individual Sprite/Run/Warrior_Run_7.png" id="29_v2t6f"]
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
-[ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
+[ext_resource type="Script" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xry5e"]
