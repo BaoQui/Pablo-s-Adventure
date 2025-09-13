@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=37 format=3 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://c1h5hxuv6aq7x" path="res://Individual Sprite/idle/Warrior_Idle_1.png" id="2_efrwb"]
@@ -23,10 +23,6 @@
 [ext_resource type="Texture2D" uid="uid://cv6vdhq7kew5" path="res://Individual Sprite/Attack/Warrior_Attack_6.png" id="16_bfour"]
 [ext_resource type="Texture2D" uid="uid://tf6g3xa0btgs" path="res://Individual Sprite/Attack/Warrior_Attack_7.png" id="17_8gr2b"]
 [ext_resource type="Texture2D" uid="uid://bjdv5lnfv6rvo" path="res://Individual Sprite/Attack/Warrior_Attack_8.png" id="18_vl8ci"]
-[ext_resource type="Texture2D" uid="uid://vwfnf10v8k2n" path="res://Individual Sprite/Attack/Warrior_Attack_9.png" id="19_ieltc"]
-[ext_resource type="Texture2D" uid="uid://dyfm45doxe3yf" path="res://Individual Sprite/Attack/Warrior_Attack_10.png" id="20_fddr8"]
-[ext_resource type="Texture2D" uid="uid://b7tsjegsrowb2" path="res://Individual Sprite/Attack/Warrior_Attack_11.png" id="21_oybyf"]
-[ext_resource type="Texture2D" uid="uid://du8a4mtaurxr5" path="res://Individual Sprite/Attack/Warrior_Attack_12.png" id="22_ajfva"]
 [ext_resource type="Texture2D" uid="uid://crysipxpgsmty" path="res://Individual Sprite/Run/Warrior_Run_1.png" id="23_5ef02"]
 [ext_resource type="Texture2D" uid="uid://d4g5s2as8he0s" path="res://Individual Sprite/Run/Warrior_Run_2.png" id="24_pfmca"]
 [ext_resource type="Texture2D" uid="uid://cqjg5rcpuf30j" path="res://Individual Sprite/Run/Warrior_Run_3.png" id="25_76oay"]
@@ -113,22 +109,10 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("18_vl8ci")
-}, {
-"duration": 1.0,
-"texture": ExtResource("19_ieltc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("20_fddr8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("21_oybyf")
-}, {
-"duration": 1.0,
-"texture": ExtResource("22_ajfva")
 }],
-"loop": true,
+"loop": false,
 "name": &"punch",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -161,12 +145,12 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sweqy"]
-radius = 6.79981
-height = 41.5815
+radius = 4.39104
+height = 33.2656
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2hs0m"]
-radius = 5.80261
-height = 11.6052
+radius = 6.31849
+height = 33.3141
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_onrkg"]
 
@@ -185,13 +169,13 @@ jump_force = 400.0
 gravity = 800.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
-position = Vector2(5.6457, -1.07142)
+position = Vector2(6.77475, -4.28557)
 sprite_frames = SubResource("SpriteFrames_xry5e")
 animation = &"punch"
-speed_scale = 12.0
+speed_scale = 30.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-position = Vector2(1.12914, 3.21427)
+position = Vector2(2.25819, 0.000124216)
 scale = Vector2(1.28571, 0.773005)
 shape = SubResource("CapsuleShape2D_sweqy")
 
@@ -200,7 +184,7 @@ position = Vector2(28, 3)
 scale = Vector2(3.71964, 0.96015)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/PunchHitbox"]
-position = Vector2(-3.27775, -3.12452)
+position = Vector2(-3.58133, -8.70384)
 scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
 
@@ -213,7 +197,7 @@ position = Vector2(1, 0)
 shape = SubResource("WorldBoundaryShape2D_onrkg")
 
 [node name="Dummy" type="CharacterBody2D" parent="."]
-position = Vector2(117, 53)
+position = Vector2(116.943, 58.6298)
 scale = Vector2(0.901565, 0.901565)
 script = ExtResource("3_sweqy")
 
