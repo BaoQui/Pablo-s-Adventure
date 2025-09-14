@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfgieb2a1ooff"]
+
+[ext_resource type="Script" uid="uid://xg8gc5odef55" path="res://death_screen.gd" id="1_if853"]
+[ext_resource type="Texture2D" uid="uid://b8wnwfy8rydhq" path="res://sr5z0431d3fdc7aws3.png" id="2_ex68u"]
+
+[node name="Death_Screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_if853")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 169.0
+offset_top = 33.0
+offset_right = 243.0
+offset_bottom = 126.0
+scale = Vector2(2.21, 2.21)
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "You Died!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Retry" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Retry"
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer"]
+z_index = -290
+position = Vector2(37.1041, 69.2308)
+scale = Vector2(3.94, 3.94)
+texture = ExtResource("2_ex68u")
+
+[node name="Give_up" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Give Up"
+
+[connection signal="pressed" from="VBoxContainer/Retry" to="." method="_on_retry_pressed"]
+[connection signal="pressed" from="VBoxContainer/Give_up" to="." method="_on_give_up_pressed"]

@@ -1,0 +1,89 @@
+[gd_scene load_steps=7 format=3 uid="uid://ih08he4ijj22"]
+
+[ext_resource type="Script" uid="uid://ca44h5pdsgcux" path="res://end_screen.gd" id="1_my301"]
+[ext_resource type="Script" uid="uid://cl3d70rt0yylt" path="res://parallax_background.gd" id="2_be1gp"]
+[ext_resource type="Texture2D" uid="uid://dg7l6by4da7d7" path="res://Assets/game_background_4/layers/sky.png" id="2_d75mr"]
+[ext_resource type="Texture2D" uid="uid://hlvoe6xt4b3y" path="res://Assets/game_background_4/layers/rocks.png" id="3_be1gp"]
+[ext_resource type="Texture2D" uid="uid://cbnrp1pcfqoh3" path="res://Assets/game_background_4/layers/ground.png" id="4_kaxt3"]
+[ext_resource type="Texture2D" uid="uid://bjwkdto8pelvu" path="res://Assets/game_background_4/layers/clouds_1.png" id="5_2afhe"]
+
+[node name="End_Screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_my301")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 5.0
+offset_right = 513.0
+offset_bottom = 98.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "
+
+
+
+
+
+
+Pablo Wins!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Play Again" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play Again"
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("2_be1gp")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+z_index = -2
+motion_scale = Vector2(0.3, 1)
+motion_mirroring = Vector2(500, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(256.75, 144.75)
+scale = Vector2(0.267969, 0.268981)
+texture = ExtResource("2_d75mr")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 1)
+motion_mirroring = Vector2(500, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
+position = Vector2(256.75, 144.75)
+scale = Vector2(0.267969, 0.268981)
+texture = ExtResource("3_be1gp")
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.7, 1)
+motion_mirroring = Vector2(500, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
+position = Vector2(256.75, 144.75)
+scale = Vector2(0.267969, 0.268981)
+texture = ExtResource("4_kaxt3")
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
+z_index = -1
+motion_scale = Vector2(0.2, 1)
+motion_mirroring = Vector2(500, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
+position = Vector2(256.75, 144.75)
+scale = Vector2(0.267969, 0.268981)
+texture = ExtResource("5_2afhe")
+
+[connection signal="pressed" from="VBoxContainer/Play Again" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
