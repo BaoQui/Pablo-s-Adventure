@@ -19,6 +19,7 @@ var dragged_item: InventorySlot = null
 var drag_preview: Control = null
 
 func _ready():
+	# Set up the UI
 	setup_ui()
 	hide()
 	print("InventoryUI ready and hidden")
@@ -55,10 +56,12 @@ func create_inventory_slot(is_hand_slot: bool, slot_index: int) -> InventorySlot
 	return slot
 
 func open_inventory(inventory: CardInventory):
+	print("InventoryUI.open_inventory called")
 	card_inventory = inventory
 	refresh_display()
 	show()
 	get_tree().paused = true
+	print("Inventory opened and visible: ", visible)
 
 func close_inventory():
 	print("Closing inventory...")
@@ -68,33 +71,60 @@ func close_inventory():
 
 func refresh_display():
 	if not card_inventory:
+		print("No card_inventory to refresh!")
 		return
+	
+	print("Refreshing display...")
 	
 	# Update hand slots
 	var hand_cards = card_inventory.get_hand_cards()
 	for i in hand_slots.size():
-		if i < hand_cards.size():
+		if i < hand_cards.size() and hand_cards[i] != null:
 			hand_slots[i].set_item(hand_cards[i])
+			print("Set hand slot ", i, " to ", hand_cards[i].card_name)
 		else:
 			hand_slots[i].set_item(null)
 	
 	# Update inventory slots
 	var inventory_cards = card_inventory.get_inventory_cards()
 	for i in inventory_slots.size():
-		if i < inventory_cards.size():
+		if i < inventory_cards.size() and inventory_cards[i] != null:
 			inventory_slots[i].set_item(inventory_cards[i])
+			print("Set inventory slot ", i, " to ", inventory_cards[i].card_name)
 		else:
 			inventory_slots[i].set_item(null)
 
+func _input(event):
+	if not visible:
+		return
+	
+	# Handle I key to close inventory
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_I:
+			print("I key pressed - closing inventory")
+			close_inventory()
+			get_viewport().set_input_as_handled()  # Prevent other handlers
+			return
+		elif event.keycode == KEY_ESCAPE:
+			print("ESC key pressed - closing inventory")
+			close_inventory()
+			get_viewport().set_input_as_handled()
+			return
+	
+	# Handle dragging
+	if dragged_item and drag_preview and event is InputEventMouseMotion:
+		drag_preview.global_position = event.global_position - Vector2(32, 32)
+
 func _on_slot_clicked(slot: InventorySlot):
-	# Handle slot clicking if needed
-	pass
+	print("Slot clicked: ", slot.slot_index, " is_hand: ", slot.is_hand_slot)
 
 func _on_drag_started(slot: InventorySlot):
+	print("Drag started from slot: ", slot.slot_index)
 	dragged_item = slot
 	create_drag_preview(slot)
 
-func _on_drag_ended(_slot: InventorySlot):
+func _on_drag_ended(slot: InventorySlot):
+	print("Drag ended from slot: ", slot.slot_index)
 	if drag_preview:
 		drag_preview.queue_free()
 		drag_preview = null
@@ -108,51 +138,44 @@ func create_drag_preview(slot: InventorySlot):
 	add_child(drag_preview)
 	
 	var preview_image = TextureRect.new()
-	preview_image.texture = slot.item.icon
+	if slot.item.icon:
+		preview_image.texture = slot.item.icon
 	preview_image.custom_minimum_size = Vector2(64, 64)
 	preview_image.modulate.a = 0.7
 	drag_preview.add_child(preview_image)
 	
 	drag_preview.z_index = 100
 
-func _input(event):
-	if not visible:
-		return
-	
-	# Handle I key to close inventory
-	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_I:
-			print("I key pressed - closing inventory")
-			close_inventory()
-			get_viewport().set_input_as_handled()  # Prevent other handlers
-			return
-	
-	# Handle dragging
-	if dragged_item and drag_preview and event is InputEventMouseMotion:
-		drag_preview.global_position = event.global_position - Vector2(32, 32)
-
-
 func try_drop_item(target_slot: InventorySlot) -> bool:
 	if not dragged_item or not target_slot:
+		print("Drop failed - no dragged item or target")
 		return false
+	
+	print("Trying to drop item from ", dragged_item.slot_index, " to ", target_slot.slot_index)
 	
 	# Check if we can place the item in the target slot
 	if target_slot.item != null:
 		# Try to swap items
+		print("Target has item - attempting swap")
 		return try_swap_items(dragged_item, target_slot)
 	else:
 		# Check capacity constraints
 		if target_slot.is_hand_slot and card_inventory.get_hand_size() >= 3 and not dragged_item.is_hand_slot:
+			print("Hand is full!")
 			return false
 		if not target_slot.is_hand_slot and card_inventory.get_inventory_size() >= 10 and dragged_item.is_hand_slot:
+			print("Inventory is full!")
 			return false
 		
 		# Move item to target slot
+		print("Moving item to empty slot")
 		return move_item(dragged_item, target_slot)
 
 func try_swap_items(source_slot: InventorySlot, target_slot: InventorySlot) -> bool:
 	var source_item = source_slot.item
 	var target_item = target_slot.item
+	
+	print("Swapping items: ", source_item.card_name, " <-> ", target_item.card_name)
 	
 	# Temporarily remove both items
 	if source_slot.is_hand_slot:
@@ -182,6 +205,8 @@ func try_swap_items(source_slot: InventorySlot, target_slot: InventorySlot) -> b
 func move_item(source_slot: InventorySlot, target_slot: InventorySlot) -> bool:
 	var item = source_slot.item
 	
+	print("Moving item: ", item.card_name)
+	
 	# Remove from source
 	if source_slot.is_hand_slot:
 		card_inventory.remove_from_hand(source_slot.slot_index)
@@ -197,6 +222,5 @@ func move_item(source_slot: InventorySlot, target_slot: InventorySlot) -> bool:
 	refresh_display()
 	return true
 
-
-func _on_close_button_pressed() -> void:
-	pass # Replace with function body.
+func _on_close_button_pressed():
+	close_inventory()

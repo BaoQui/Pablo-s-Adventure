@@ -202,7 +202,8 @@ func _update_card_effects():
 	# Duelist effect is handled in combat
 	print("Updated stats - Health: ", max_health, " Punch: ", punch_damage, " Money: ", money_multiplier)
 
-func take_damage(damage: int, hit_position: Vector2 = Vector2.ZERO):
+# Fixed: Added _ prefix to indicate intentionally unused parameter
+func take_damage(damage: int, _hit_position: Vector2 = Vector2.ZERO):
 	current_health -= damage
 	duelist_hit_streak = 0  # Reset duelist streak when taking damage
 	duelist_speed_multiplier = 1.0
@@ -270,7 +271,6 @@ func _on_punch_hitbox_body_entered(body: Node) -> void:
 	if body.has_method("take_damage"):
 		body.take_damage(punch_damage, $PunchHitbox.global_position)
 
-		
 		# Check if enemy died to trigger card drop
 		if body.has_method("is_dead") and body.is_dead():
 			kill_enemy()
