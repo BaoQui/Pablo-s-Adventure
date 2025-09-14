@@ -14,17 +14,17 @@ enum Pattern { HOVER, SINE, BURST }
 @export var sine_freq: float = 3.0
 @export var burst_speed: float = 300.0
 
-# --- Optional roam bounds (set in Inspector). If size==0, we try to infer from named walls. ---
+# --- Optional roam bounds (set in Inspector). If size==0, tries to infer from named walls. ---
 @export var patrol_rect: Rect2
 
 # --- Wall awareness / steering (prevents picking moves into walls) ---
 @export var lookahead_dist: float = 18.0
 @export var bounce_cooldown: float = 0.12
-@export var separation_push: float = 10.0   # tiny nudge off surfaces
+@export var separation_push: float = 10.0 # tiny nudge off surfaces
 
 # --- CEILING forced-down behavior ---
 @export var forced_down_speed: float = 240.0
-@export var forced_down_time: float = 2.0   # seconds to fly straight down
+@export var forced_down_time: float = 2.0 # seconds to fly straight down
 
 # --- Hit reaction (away from punch source) ---
 @export var knockback_speed: float = 520.0
@@ -46,7 +46,7 @@ var knockback_timer: float = 0.0
 var knockback_dir: Vector2 = Vector2.ZERO
 var wall_cooldown: float = 0.0
 
-# Forced state when hitting ceiling
+# Forced descent state
 enum ForcedState { NONE, DOWN }
 var forced_state: int = ForcedState.NONE
 var forced_timer: float = 0.0
@@ -71,6 +71,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, desired_v_forced.x, acceleration * delta)
 		velocity.y = move_toward(velocity.y, desired_v_forced.y, acceleration * delta)
 		move_and_slide()
+		_post_move_separation(delta) # Added from Prekene
 		if forced_timer <= 0.0:
 			forced_state = ForcedState.NONE
 			_restart_pattern_cycle()
@@ -104,9 +105,9 @@ func _handle_named_bounds(delta: float) -> void:
 			# Enter forced downward flight for forced_down_time, restart patterns after
 			forced_state = ForcedState.DOWN
 			forced_timer = forced_down_time
-			pattern_timer.stop()                         # pause pattern switching during forced state
+			pattern_timer.stop() # pause pattern switching during forced state
 			global_position.y += separation_push * delta # small separation so we don't keep colliding
-			velocity = Vector2(0.0, forced_down_speed)   # immediate downward response
+			velocity = Vector2(0.0, forced_down_speed) # immediate downward response
 			return
 		elif name_str == "Floor":
 			global_position.y -= separation_push * delta
@@ -120,14 +121,26 @@ func _handle_named_bounds(delta: float) -> void:
 			global_position.x += separation_push * delta
 			if velocity.x < 0.0:
 				velocity.x = absf(velocity.x)
+	# Gentle separation from any surface we’re pressed against (from Prekene)
+	_post_move_separation(delta)
+
+func _post_move_separation(delta: float) -> void:
+	# Optional gentle separation from any surface we touched to avoid micro-sticking
+	for i in range(get_slide_collision_count()):
+		var c := get_slide_collision(i)
+		if c == null:
+			continue
+		var n: Vector2 = c.get_normal()
+		# Nudge away a little
+		global_position += n * (separation_push * 0.5 * delta)
+
+func _on_pattern_timeout() -> void:
+	_pick_new_pattern()
 
 func _restart_pattern_cycle() -> void:
 	_pick_new_pattern()
 	pattern_timer.wait_time = pattern_duration
 	pattern_timer.start()
-
-func _on_pattern_timeout() -> void:
-	_pick_new_pattern()
 
 func _pick_new_pattern() -> void:
 	current_pattern = _weighted_choice(pattern_weights)
@@ -190,6 +203,7 @@ func _steer_away_from_walls(desired_v: Vector2) -> Vector2:
 			out_v.y = -out_v.y
 	return out_v
 
+# ---- Utilities ----
 func _weighted_choice(weights: PackedFloat32Array) -> int:
 	var total: float = 0.0
 	for w in weights:
@@ -232,7 +246,7 @@ func _find_node_recursive(n: Node, target: String) -> Node:
 			return found
 	return null
 
-# Knockback away from punch source
+# ---- Combat ----
 func take_damage(damage_amount: int, from_point: Vector2 = Vector2.INF) -> void:
 	health -= damage_amount
 	print("Enemy took ", damage_amount, " damage. Health is now: ", health)
