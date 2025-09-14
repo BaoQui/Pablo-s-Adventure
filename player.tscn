@@ -208,7 +208,7 @@ scale = Vector2(2.47984, 2.54137)
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(-44.761, 28.7247)
-scale = Vector2(0.357132, 0.367257)
+scale = Vector2(0.357132, 0.372261)
 script = ExtResource("1_4flbx")
 move_speed = 200.0
 acceleration = 1700.0
@@ -216,9 +216,8 @@ deceleration = 6000.0
 jump_force = 400.0
 gravity = 800.0
 projectile_scene = ExtResource("2_8gr2b")
-projectile_distance = 4000.0
+projectile_distance = 200.0
 projectile_speed = 300.0
-projectile_damage = 300
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(6.77475, -4.28557)
