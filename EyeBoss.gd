@@ -113,3 +113,4 @@ func take_damage(amount: int, from_point: Vector2 = Vector2.INF) -> void:
 	if health <= 0:
 		print("Boss defeated!")
 		queue_free()
+		get_tree().change_scene_to_file("res://end_screen.tscn")
