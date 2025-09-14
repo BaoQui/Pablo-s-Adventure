@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxwy28o2fnsrx"]
+
+[ext_resource type="Script" uid="uid://cy2rny6f0pldg" path="res://inventory_ui.gd" id="1_dsn3v"]
+
+[node name="Control" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dsn3v")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Handsection" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="CurrentHand" type="Label" parent="VBoxContainer/Handsection"]
+layout_mode = 2
+
+[node name="Handgrid" type="GridContainer" parent="VBoxContainer/Handsection"]
+layout_mode = 2
+
+[node name="Inventorysection" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Current Hand" type="Label" parent="VBoxContainer/Inventorysection"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Inventorysection"]
+layout_mode = 2
+
+[node name="InventoryGrid" type="GridContainer" parent="VBoxContainer/Inventorysection/ScrollContainer"]
+layout_mode = 2
+
+[node name="Cardinfopanel" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="CardInfoLabel" type="RichTextLabel" parent="VBoxContainer/Cardinfopanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Closebutton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
