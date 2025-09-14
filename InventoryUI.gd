@@ -22,6 +22,7 @@ func _ready():
 	# Set up the UI
 	setup_ui()
 	hide()
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 	print("InventoryUI ready and hidden")
 
 func setup_ui():
@@ -59,7 +60,7 @@ func open_inventory(inventory: CardInventory, player: Node = null):
 	card_inventory = inventory
 	player_reference = player
 	selected_inventory_cards.clear()
-	populate_hand_from_inventory()
+	#populate_hand_from_inventory()
 	refresh_display()
 	
 	# Position the inventory relative to camera/player
@@ -94,7 +95,7 @@ func position_inventory_on_screen():
 		print("Positioned inventory at camera center: ", global_position)
 	elif player_reference:
 		# Fallback: use player position if no camera found
-		var viewport_size = get_viewport().get_visible_rect().size
+		var _viewport_size = get_viewport().get_visible_rect().size
 		global_position = Vector2(
 			player_reference.global_position.x - size.x / 2,
 			player_reference.global_position.y - size.y / 2
