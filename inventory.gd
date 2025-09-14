@@ -7,7 +7,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_inventory"):
+	if event.is_action_pressed("ui_pause"):
 		toggle_visibility()
 
 
