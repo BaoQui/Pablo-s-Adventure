@@ -4,10 +4,10 @@ extends Control
 signal inventory_closed
 
 # Node references
-@onready var hand_container: GridContainer = $HandPanel/HandGrid
-@onready var inventory_container: GridContainer = $InventoryPanel/InventoryGrid
-@onready var hand_label: Label = $HandPanel/HandLabel
-@onready var inventory_label: Label = $InventoryPanel/InventoryLabel
+@onready var hand_container: GridContainer = $MainContainer/HandPanel/HandGrid
+@onready var inventory_container: GridContainer = $MainContainer/InventoryPanel/InventoryGrid
+@onready var hand_label: Label = $MainContainer/HandPanel/HandLabel
+@onready var inventory_label: Label = $MainContainer/InventoryPanel/InventoryLabel
 
 # Inventory reference
 var card_inventory: CardInventory
