@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 # --- Horizontal motion ---
-@export var move_speed: float = 110.0
+@export var move_speed: float = 100.0
 @export var start_direction_right: bool = true
 
 # --- Gravity & bounce ---
@@ -15,10 +15,10 @@ extends CharacterBody2D
 @export var flip_cooldown: float = 0.08
 
 # --- Damage (optional) ---
-@export var health: int = 25
-@export var knockback_speed: float = 420.0
-@export var knockback_upward: float = 120.0
-@export var knockback_time: float = 0.15
+@export var health: int = 30
+@export var knockback_duration: float = 0.15   # matches groundenemy.gd
+@export var knockback_strength_x: float = 400.0
+@export var knockback_strength_y: float = 300.0
 
 # --- Ground identification (hard requirement) ---
 @export var ground_shape_name: String = "CollisionShape2D2"
@@ -29,10 +29,10 @@ extends CharacterBody2D
 var dir: int = 1
 var flip_timer: float = 0.0
 var knockback_timer: float = 0.0
-var knockback_dir_x: float = 0.0
 
 func _ready() -> void:
 	dir = 1 if start_direction_right else -1
+	add_to_group("Enemy")  # make sure the player can hit this enemy
 
 func _physics_process(delta: float) -> void:
 	flip_timer = maxf(flip_timer - delta, 0.0)
@@ -47,10 +47,8 @@ func _physics_process(delta: float) -> void:
 	if flip_timer <= 0.0 and test_move(global_transform, step):
 		_flip_horizontal("lookahead")
 
-	# Horizontal velocity (knockback overrides)
-	if knockback_timer > 0.0:
-		velocity.x = knockback_dir_x * knockback_speed
-	else:
+	# Horizontal velocity
+	if knockback_timer <= 0.0:
 		velocity.x = float(dir) * move_speed
 
 	# Move
@@ -94,7 +92,6 @@ func _flip_horizontal(reason: String) -> void:
 		print("[Bouncer] flip -> dir=", dir, " (", reason, ")")
 
 # Returns true if any slide collision this frame involves the node named `ground_shape_name`
-# (either the collider itself has that name OR one of its children does).
 func _touched_named_ground_this_frame() -> bool:
 	for i in range(get_slide_collision_count()):
 		var c := get_slide_collision(i)
@@ -104,11 +101,9 @@ func _touched_named_ground_this_frame() -> bool:
 		if collider == null:
 			continue
 
-		# 1) Collider itself is the named node
 		if collider is Node and (collider as Node).name == ground_shape_name:
 			return true
 
-		# 2) Collider owns a child node with that exact name (typical StaticBody2D -> CollisionShape2D2)
 		if collider is Node:
 			var node := collider as Node
 			for child in node.get_children():
@@ -117,21 +112,48 @@ func _touched_named_ground_this_frame() -> bool:
 	return false
 
 # --- Combat API ---
-# Player should call: body.take_damage(damage, $PunchHitbox.global_position)
 func take_damage(damage_amount: int, from_point: Vector2 = Vector2.INF) -> void:
 	health -= damage_amount
-	print("Bouncer took ", damage_amount, " damage. Health: ", health)
+	print(name, " took ", damage_amount, " damage. Health is now: ", health)
 
 	if from_point != Vector2.INF:
-		var away: Vector2 = (global_position - from_point).normalized()
-		if away == Vector2.ZERO:
-			away = Vector2.RIGHT
-		knockback_dir_x = signf(away.x)
-		velocity.y = -knockback_upward
-		knockback_timer = knockback_time
-	else:
-		_flip_horizontal("damage_no_from_point")
+		# Knockback strengths (tweak as needed)
+		var knockback_strength_x: float = 400.0
+		var knockback_strength_y: float = 300.0
+
+		# If attacker is to the left of enemy → knock enemy right
+		if from_point.x > global_position.x:
+			velocity.x = knockback_strength_x
+		else:
+			# Attacker is to the right of enemy → knock enemy left
+			velocity.x = -knockback_strength_x
+
+		# Always knock upwards
+		velocity.y = -knockback_strength_y
+
+		knockback_timer = knockback_duration
 
 	if health <= 0:
-		print("Bouncer defeated!")
-		queue_free()
+		die()
+
+func die():
+	print("Bouncer defeated!")
+	queue_free()
+
+# --- Hurt player on collision ---
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Player"):
+		body.do_damage(10, global_position)
+
+		var knockback_strength_x: float = 500.0
+		var knockback_strength_y: float = 300.0
+
+		if body.global_position.x < global_position.x:
+			body.velocity.x = -knockback_strength_x
+		else:
+			body.velocity.x = knockback_strength_x
+
+		body.velocity.y = -knockback_strength_y
+
+		if "knockback_timer" in body:
+			body.knockback_timer = 0.3
