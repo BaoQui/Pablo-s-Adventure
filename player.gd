@@ -1,9 +1,5 @@
 extends CharacterBody2D
 
-@onready var health_label: Label = $"../CanvasLayer/health_label"
-# --- Kill Count ---
-@export var kill_count: int = 0
-
 # --- Movement settings ---
 @export var base_move_speed: float = 300.0
 @export var move_speed: float = 300.0
@@ -43,8 +39,7 @@ extends CharacterBody2D
 @export var base_money_multiplier: float = 1.0
 @export var money_multiplier: float = 1.0
 
-# --- UI References ---
-@export var inventory_ui_scene: PackedScene
+@onready var inventory_ui: Control = $InventoryUI
 
 # --- Node references ---
 @onready var punch_hitbox: Area2D = $PunchHitbox
@@ -64,11 +59,6 @@ var freeze_velocity: bool = false
 var stored_velocity: Vector2 = Vector2.ZERO
 var can_dash: bool = true
 
-# --- UI Variables ---
-var inventory_ui: CanvasLayer = null
-var inventory_root: Control = null
-var inventory_input_cooldown: float = 0.0
-
 # --- Card effects ---
 var duelist_hit_streak: int = 0
 var duelist_speed_multiplier: float = 1.0
@@ -76,75 +66,41 @@ var duelist_speed_multiplier: float = 1.0
 func _ready() -> void:
 	# Ensure hitbox starts off
 	punch_hitbox.monitoring = false
-
+	
 	# Connect signals safely
 	if not punch_hitbox.body_entered.is_connected(_on_punch_hitbox_body_entered):
 		punch_hitbox.body_entered.connect(_on_punch_hitbox_body_entered)
 	if not anim.animation_finished.is_connected(_on_animation_finished):
 		anim.animation_finished.connect(_on_animation_finished)
+	
+	# Connect card inventory signals
 	if card_inventory and not card_inventory.hand_changed.is_connected(_on_hand_changed):
 		card_inventory.hand_changed.connect(_on_hand_changed)
-
+	
 	current_animation = ""
 	play_animation("idle")
+	
+	# Initialize card effects
 	_update_card_effects()
-
-	# Add to Player group
-	add_to_group("Player")
-	update_health_display()
-	
-	# Setup inventory UI
-	setup_inventory_ui()
-	
-	# Test: Add some cards to the inventory
-	call_deferred("add_test_cards")
-
-func setup_inventory_ui():
-	if inventory_ui_scene:
-		inventory_ui = inventory_ui_scene.instantiate()  # This is now a CanvasLayer
-		get_tree().root.add_child(inventory_ui)
-
-		# Grab the Control child inside the CanvasLayer (your old root)
-		inventory_root = inventory_ui.get_child(0) as Control
-		if inventory_root == null:
-			push_error("InventoryUI scene is missing a Control child!")
-			return
-
-		# Now connect the signal on the Control, NOT the CanvasLayer
-		inventory_root.inventory_closed.connect(_on_inventory_closed)
-		print("Inventory UI setup complete")
-	else:
-		print("Warning: inventory_ui_scene not assigned!")
-
-func add_test_cards():
-	if card_inventory:
-		# Add a few test cards
-		for i in range(5):
-			var test_card = card_inventory.generate_random_drop()
-			card_inventory.add_card_to_inventory(test_card)
-			print("Added test card: ", test_card.card_name)
-		
-		print("Test cards added. Press I to open inventory!")
 
 func _physics_process(delta: float) -> void:
 	# --- timers ---
-	punch_timer = max(0.0, punch_timer - delta)
-	projectile_timer = max(0.0, projectile_timer - delta)
-	dash_timer = max(0.0, dash_timer - delta)
-	dash_cooldown_timer = max(0.0, dash_cooldown_timer - delta)
-	inventory_input_cooldown = max(0.0, inventory_input_cooldown - delta)
+	punch_timer -= delta
+	projectile_timer -= delta
+	dash_timer -= delta
+	dash_cooldown_timer -= delta
 
 	var input_dir: float = Input.get_axis("ui_left", "ui_right")
 
-	# Freeze movement during air punch
+	# Freeze movement during air punch (except a tiny nudge)
 	if freeze_velocity:
 		if not is_on_floor():
-			var push: float = (-1.0 if anim.flip_h else 1.0) * air_punch_push
+			var push: float = ( -1.0 if anim.flip_h else 1.0 ) * air_punch_push
 			velocity = Vector2(push, 0.0)
 		else:
 			velocity = Vector2.ZERO
 	else:
-		# Horizontal movement
+		# --- Horizontal movement ---
 		if is_dashing:
 			if dash_timer <= 0.0:
 				end_dash()
@@ -156,7 +112,7 @@ func _physics_process(delta: float) -> void:
 			if absf(velocity.x) < 1.0:
 				velocity.x = 0.0
 
-		# Gravity
+		# --- Gravity ---
 		if not is_on_floor():
 			if velocity.y > 0.0:
 				velocity.y += gravity * fall_multiplier * delta
@@ -191,110 +147,100 @@ func _physics_process(delta: float) -> void:
 		can_dash = false
 
 	# --- Shoot projectile ---
-	if Input.is_action_just_pressed("ui_shoot") and projectile_timer <= 0.0:
+	if Input.is_action_just_pressed("ui_shoot") and projectile_timer <= 0:
 		shoot_projectile()
 		projectile_timer = projectile_cooldown
+
+	# --- Open inventory (example with ESC key) ---
+	if Input.is_action_just_pressed("ui_inventory"):
+		open_inventory_menu()
 
 	update_animation(input_dir)
 	move_and_slide()
 
-# Handle inventory input separately to avoid conflicts
-func _unhandled_key_input(event):
-	if event.pressed and inventory_input_cooldown <= 0.0:
-		if event.is_action_pressed("ui_inventory"):
-			print("Player detected ui_inventory input")
-			toggle_inventory()
-			inventory_input_cooldown = 0.2  # Prevent rapid toggling
-			get_viewport().set_input_as_handled()
-
-# Debug function to print current hand (can be called anytime)
-func print_current_hand_debug():
-	if not card_inventory:
-		print("No card inventory found!")
-		return
-	
-	print("=== PLAYER HAND DEBUG ===")
-	var hand_cards = card_inventory.get_hand_cards()
-	if hand_cards.size() == 0:
-		print("Hand is empty!")
-		return
-	
-	for i in range(hand_cards.size()):
-		if hand_cards[i] != null:
-			print("Hand slot %d: %s" % [i, hand_cards[i].card_name])
-			print("  - Type: %s" % _get_card_type_name(hand_cards[i].card_type))
-			print("  - Effect Value: %d" % hand_cards[i].effect_value)
-		else:
-			print("Hand slot %d: Empty" % i)
-	print("========================")
-
-func _get_card_type_name(card_type) -> String:
-	match card_type:
-		0: return "HEART"
-		1: return "CLUB" 
-		2: return "SPADE"
-		3: return "DIAMOND"
-		4: return "JOKER"
-		_: return "UNKNOWN"
-
-# --- Card Effects ---
 func _on_hand_changed():
-	print("Hand changed! Current hand contents:")
-	print_current_hand_debug()
 	_update_card_effects()
 
 func _update_card_effects():
 	if not card_inventory:
 		return
+	
 	# Reset to base values
 	max_health = base_health
 	punch_damage = base_punch_damage
 	projectile_cooldown = base_projectile_cooldown
 	move_speed = base_move_speed
 	money_multiplier = base_money_multiplier
+	
+	# Apply card modifiers
+	var health_bonus = card_inventory.get_hand_modifier(Card.CardType.HEART)
+	var club_reduction = card_inventory.get_hand_modifier(Card.CardType.CLUB)
+	var punch_bonus = card_inventory.get_hand_modifier(Card.CardType.SPADE)
+	var money_bonus = card_inventory.get_hand_modifier(Card.CardType.DIAMOND)
+	
+	# Apply modifiers
+	max_health += health_bonus
+	punch_damage += int(punch_bonus)
+	projectile_cooldown = max(0.1, projectile_cooldown - club_reduction)
+	money_multiplier += money_bonus
+	
 	# Ensure current health doesn't exceed new max
 	current_health = min(current_health, max_health)
+	
+	# Apply joker effects
+	var joker_effects = card_inventory.get_hand_joker_effects()
+	
+	if "JESTER" in joker_effects:
+		punch_damage += int(15 * joker_effects["JESTER"])
+	
+	if "BANKER" in joker_effects:
+		money_multiplier *= pow(1.5, joker_effects["BANKER"])
+	
+	if "ATHLETE" in joker_effects:
+		move_speed += 100 * joker_effects["ATHLETE"]
+	
+	# Duelist effect is handled in combat
+	print("Updated stats - Health: ", max_health, " Punch: ", punch_damage, " Money: ", money_multiplier)
 
-# --- Damage ---
-func do_damage(damage: int, _hit_position: Vector2 = Vector2.ZERO):
-	current_health -= damage
-	print("Player has taken ", damage, " damage")
-	duelist_hit_streak = 0
+func take_damage(amount: int, hit_position: Vector2 = Vector2.ZERO):
+	current_health -= amount
+	duelist_hit_streak = 0  # Reset duelist streak when taking damage
 	duelist_speed_multiplier = 1.0
-	update_health_display()
+	
 	if current_health <= 0:
 		die()
 
 func die():
 	print("Player died!")
-	if inventory_ui:
-		inventory_ui.close_inventory()
-	get_tree().change_scene_to_file("res://death_screen.tscn")
+	# Implement death logic here
+
+func kill_enemy():
+	# Called when player kills an enemy
+	var joker_effects = card_inventory.get_hand_joker_effects()
 	
-	# TODO: Handle respawn / game over
+	# Duelist effect - increase attack speed
+	if "DUELIST" in joker_effects:
+		duelist_hit_streak += 1
+		duelist_speed_multiplier = max(0.3, 1.0 - (duelist_hit_streak * 0.05))
+	
+	# Chance to get a random card drop
+	if randf() < 0.2:  # 20% chance
+		var new_card = card_inventory.generate_random_drop()
+		card_inventory.add_card_to_inventory(new_card)
+		print("Card dropped: ", new_card.card_name)
 
-# --- Inventory ---
-func toggle_inventory() -> void:
-	print("Toggle inventory called")
-	if inventory_root:
-		if inventory_root.visible:
-			print("Closing inventory")
-			inventory_root.close_inventory()
-		else:
-			print("Opening inventory")
-			inventory_root.open_inventory(card_inventory, self)
-	else:
-		print("Inventory UI not found!")
+func earn_money(base_amount: int) -> int:
+	return int(base_amount * money_multiplier)
 
-
-func _on_inventory_closed():
-	print("Inventory closed callback received")
-	inventory_input_cooldown = 0.2  # Small cooldown to prevent immediate reopening
+func open_inventory_menu():
+	if inventory_ui and card_inventory:
+		inventory_ui.open_inventory(card_inventory)
 
 # --- Animation ---
 func update_animation(input_dir: float) -> void:
 	if is_punching or is_dashing:
 		return
+
 	if not is_on_floor():
 		if velocity.y < 0.0:
 			play_animation("jump")
@@ -314,35 +260,22 @@ func play_animation(anim_name: String, speed: float = 1.0) -> void:
 func _on_animation_finished() -> void:
 	if current_animation == "punch":
 		is_punching = false
-		freeze_velocity = false
+		if freeze_velocity:
+			freeze_velocity = false
 	elif current_animation == "dash":
 		is_dashing = false
 
-# --- Punch ---
+# When the punch hitbox touches ANY PhysicsBody2D (e.g. enemies)
 func _on_punch_hitbox_body_entered(body: Node) -> void:
-	if body.is_in_group("Enemy") and body.has_method("take_damage"):
-		# ✅ FIX: use player position for knockback, not hitbox
-		body.take_damage(punch_damage, global_position)
+	if body.has_method("take_damage"):
+		body.take_damage(punch_damage, $PunchHitbox.global_position)
 
-func punch() -> void:
-	if anim.flip_h:
-		punch_hitbox.position.x = -absf(punch_hitbox.position.x)
-	else:
-		punch_hitbox.position.x = absf(punch_hitbox.position.x)
-	is_punching = true
-	punch_hitbox.monitoring = true
-	var frame_count: int = anim.sprite_frames.get_frame_count("punch")
-	var punch_speed: float = float(frame_count) / punch_duration
-	play_animation("punch", punch_speed)
-	var hitbox_timer = get_tree().create_timer(0.1)
-	hitbox_timer.timeout.connect(func(): punch_hitbox.monitoring = false)
-	var punch_reset_timer = get_tree().create_timer(punch_duration * 0.95)
-	punch_reset_timer.timeout.connect(func():
-		is_punching = false
-		freeze_velocity = false
-	)
+		
+		# Check if enemy died to trigger card drop
+		if body.has_method("is_dead") and body.is_dead():
+			kill_enemy()
 
-# --- Dash ---
+# === DASH ===
 func start_dash(input_dir: float) -> void:
 	is_dashing = true
 	dash_timer = dash_duration
@@ -353,24 +286,52 @@ func start_dash(input_dir: float) -> void:
 func end_dash() -> void:
 	is_dashing = false
 
+# === PUNCH ===
+func punch() -> void:
+	if anim.flip_h:
+		punch_hitbox.position.x = -absf(punch_hitbox.position.x)
+	else:
+		punch_hitbox.position.x = absf(punch_hitbox.position.x)
+	
+	is_punching = true
+	punch_hitbox.monitoring = true
+
+	if not is_on_floor():
+		freeze_velocity = true
+		stored_velocity = velocity
+		velocity = Vector2.ZERO
+
+	var frame_count: int = anim.sprite_frames.get_frame_count("punch")
+	var punch_speed: float = (frame_count as float) / punch_duration
+	play_animation("punch", punch_speed)
+
+	var hitbox_timer: SceneTreeTimer = get_tree().create_timer(0.1)
+	hitbox_timer.timeout.connect(func() -> void:
+		punch_hitbox.monitoring = false
+	)
+
+	var punch_reset_timer: SceneTreeTimer = get_tree().create_timer(punch_duration * 0.95)
+	punch_reset_timer.timeout.connect(func() -> void:
+		is_punching = false
+		if freeze_velocity:
+			freeze_velocity = false
+	)
+
 # --- Projectile ---
 func shoot_projectile() -> void:
 	if projectile_scene == null:
 		print("No projectile scene assigned!")
 		return
+
 	var projectile = projectile_scene.instantiate()
 	get_parent().add_child(projectile)
+
 	var spawn_offset = Vector2(30, 0)
 	if anim.flip_h:
 		spawn_offset.x *= -1
+
 	projectile.global_position = global_position + spawn_offset
 	projectile.direction = Vector2.RIGHT if not anim.flip_h else Vector2.LEFT
 	projectile.max_distance = projectile_distance
 	projectile.speed = projectile_speed
 	projectile.damage = projectile_damage
-	
-	projectile.start_position = global_position
-	
-func update_health_display() -> void:
-	if health_label:
-		health_label.text = "HP: %d / %d" % [current_health, max_health]

@@ -4,13 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://bw4jh2txdbo5w" path="res://pngkey.com-lazer-beam-png-8162960.png" id="2_iwnfa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yqymq"]
-size = Vector2(124.5, 39)
+size = Vector2(57.5, 8)
 
 [node name="LaserBeam" type="Area2D"]
+collision_layer = 2
 script = ExtResource("1_5wvum")
+beam_width = 1.0
+beam_height = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(443.25, 150.5)
+position = Vector2(476.75, 151)
 shape = SubResource("RectangleShape2D_yqymq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
