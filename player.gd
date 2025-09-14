@@ -12,9 +12,9 @@ extends CharacterBody2D
 @export var jump_cut_multiplier: float = 0.5
 
 # --- Dash settings ---
-@export var dash_speed: float = 600.0
-@export var dash_duration: float = 0.2
-@export var dash_cooldown: float = 1.0
+@export var dash_speed: float = 400.0
+@export var dash_duration: float = 0.15
+@export var dash_cooldown: float = 0.5
 
 # --- Punch settings ---
 @export var base_punch_damage: int = 10
