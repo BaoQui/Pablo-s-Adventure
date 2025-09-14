@@ -651,7 +651,11 @@ limit_top = 0
 limit_bottom = 0
 
 [node name="InventoryUI" parent="Player" instance=ExtResource("38_ndm73")]
-scale = Vector2(1.04517, 0.915438)
+offset_left = 248.411
+offset_top = -81.3909
+offset_right = 248.411
+offset_bottom = -81.3909
+scale = Vector2(0.37655, 0.365574)
 
 [node name="CardInventory" type="Node" parent="Player"]
 script = ExtResource("39_g4vxw")
