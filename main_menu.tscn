@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://d4fic8yrcyaxq"]
+[gd_scene load_steps=6 format=3 uid="uid://d4fic8yrcyaxq"]
 
 [ext_resource type="Script" uid="uid://beswm2wibrg55" path="res://main_menu.gd" id="1_06t4h"]
+[ext_resource type="Script" uid="uid://cl3d70rt0yylt" path="res://parallax_background.gd" id="2_glbon"]
+[ext_resource type="Texture2D" uid="uid://dg1sng1gg0whq" path="res://Assets/game_background_1/layers/sky.png" id="2_jix8l"]
+[ext_resource type="Texture2D" uid="uid://hngjl8o6j8sh" path="res://Assets/game_background_1/layers/rocks_2.png" id="3_glbon"]
+[ext_resource type="Texture2D" uid="uid://82781juolxdl" path="res://Assets/game_background_1/layers/rocks_1.png" id="4_nlkkf"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -29,6 +33,37 @@ text = "PLAY"
 [node name="Quit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "QUIT"
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("2_glbon")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 1)
+motion_mirroring = Vector2(515, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(256.875, 146.25)
+scale = Vector2(0.26888, 0.268056)
+texture = ExtResource("2_jix8l")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.8, 1)
+motion_mirroring = Vector2(515, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
+z_index = 2
+position = Vector2(256.875, 146.25)
+scale = Vector2(0.26888, 0.268056)
+texture = ExtResource("3_glbon")
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(515, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
+z_index = 1
+position = Vector2(256.875, 146.25)
+scale = Vector2(0.26888, 0.268056)
+texture = ExtResource("4_nlkkf")
 
 [connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
