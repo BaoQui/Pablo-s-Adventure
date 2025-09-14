@@ -276,6 +276,8 @@ func shoot_projectile() -> void:
 	projectile.speed = projectile_speed
 	projectile.damage = projectile_damage
 	
+	projectile.start_position = global_position
+	
 func update_health_display() -> void:
 	if health_label:
 		health_label.text = "HP: %d / %d" % [current_health, max_health]
