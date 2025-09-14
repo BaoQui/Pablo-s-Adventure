@@ -59,6 +59,12 @@ var freeze_velocity: bool = false
 var stored_velocity: Vector2 = Vector2.ZERO
 var can_dash: bool = true
 
+<<<<<<< HEAD
+=======
+# --- UI Variables ---
+var inventory_ui: Control = null
+
+>>>>>>> parent of 1826745 (inv opens)
 # --- Card effects ---
 var duelist_hit_streak: int = 0
 var duelist_speed_multiplier: float = 1.0
@@ -83,12 +89,50 @@ func _ready() -> void:
 	# Initialize card effects
 	_update_card_effects()
 
+<<<<<<< HEAD
 func _physics_process(delta: float) -> void:
 	# --- timers ---
 	punch_timer -= delta
 	projectile_timer -= delta
 	dash_timer -= delta
 	dash_cooldown_timer -= delta
+=======
+	# Add to Player group
+	add_to_group("Player")
+	update_health_display()
+	
+	# Setup inventory UI
+	setup_inventory_ui()
+	
+	# Test: Add some cards to the inventory
+	call_deferred("add_test_cards")
+
+func setup_inventory_ui():
+	if inventory_ui_scene:
+		inventory_ui = inventory_ui_scene.instantiate()
+		get_tree().root.add_child(inventory_ui)
+		inventory_ui.inventory_closed.connect(_on_inventory_closed)
+		print("Inventory UI setup complete")
+	else:
+		print("Warning: inventory_ui_scene not assigned!")
+
+func add_test_cards():
+	if card_inventory:
+		# Add a few test cards
+		for i in range(3):
+			var test_card = card_inventory.generate_random_drop()
+			card_inventory.add_card_to_inventory(test_card)
+			print("Added test card: ", test_card.card_name)
+		
+		print("Test cards added. Press I to open inventory!")
+
+func _physics_process(delta: float) -> void:
+	# --- timers ---
+	punch_timer = max(0.0, punch_timer - delta)
+	projectile_timer = max(0.0, projectile_timer - delta)
+	dash_timer = max(0.0, dash_timer - delta)
+	dash_cooldown_timer = max(0.0, dash_cooldown_timer - delta)
+>>>>>>> parent of 1826745 (inv opens)
 
 	var input_dir: float = Input.get_axis("ui_left", "ui_right")
 
@@ -151,13 +195,23 @@ func _physics_process(delta: float) -> void:
 		shoot_projectile()
 		projectile_timer = projectile_cooldown
 
+<<<<<<< HEAD
 	# --- Open inventory (example with ESC key) ---
 	if Input.is_action_just_pressed("ui_inventory"):
 		open_inventory_menu()
+=======
+	# --- Open inventory ---
+	if Input.is_action_just_pressed("ui_inventory"):
+		toggle_inventory()
+>>>>>>> parent of 1826745 (inv opens)
 
 	update_animation(input_dir)
 	move_and_slide()
 
+<<<<<<< HEAD
+=======
+# --- Card Effects ---
+>>>>>>> parent of 1826745 (inv opens)
 func _on_hand_changed():
 	_update_card_effects()
 
@@ -202,9 +256,17 @@ func _update_card_effects():
 	# Duelist effect is handled in combat
 	print("Updated stats - Health: ", max_health, " Punch: ", punch_damage, " Money: ", money_multiplier)
 
+<<<<<<< HEAD
 func take_damage(amount: int, hit_position: Vector2 = Vector2.ZERO):
 	current_health -= amount
 	duelist_hit_streak = 0  # Reset duelist streak when taking damage
+=======
+# --- Damage ---
+func do_damage(damage: int, hit_position: Vector2 = Vector2.ZERO):
+	current_health -= damage
+	print("Player has taken ", damage, " damage")
+	duelist_hit_streak = 0
+>>>>>>> parent of 1826745 (inv opens)
 	duelist_speed_multiplier = 1.0
 	
 	if current_health <= 0:
@@ -229,12 +291,31 @@ func kill_enemy():
 		card_inventory.add_card_to_inventory(new_card)
 		print("Card dropped: ", new_card.card_name)
 
+<<<<<<< HEAD
 func earn_money(base_amount: int) -> int:
 	return int(base_amount * money_multiplier)
 
 func open_inventory_menu():
 	if inventory_ui and card_inventory:
 		inventory_ui.open_inventory(card_inventory)
+=======
+# --- Inventory ---
+func toggle_inventory() -> void:
+	print("Toggle inventory called")
+	if inventory_ui:
+		if inventory_ui.visible:
+			print("Closing inventory")
+			inventory_ui.close_inventory()
+		else:
+			print("Opening inventory")
+			inventory_ui.open_inventory(card_inventory)
+	else:
+		print("Inventory UI not found!")
+
+func _on_inventory_closed():
+	print("Inventory closed callback received")
+	# Add any cleanup code here if needed
+>>>>>>> parent of 1826745 (inv opens)
 
 # --- Animation ---
 func update_animation(input_dir: float) -> void:
