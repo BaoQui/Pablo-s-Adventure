@@ -1124,8 +1124,10 @@ position = Vector2(784, 114)
 shape = SubResource("CircleShape2D_annok")
 
 [node name="MoveTimer" type="Timer" parent="EyeBoss"]
+wait_time = 3.0
 one_shot = true
 
 [node name="ShootTimer" type="Timer" parent="EyeBoss"]
+wait_time = 3.0
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]

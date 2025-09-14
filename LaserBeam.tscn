@@ -7,6 +7,8 @@
 size = Vector2(124.5, 39)
 
 [node name="LaserBeam" type="Area2D"]
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_5wvum")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -14,6 +16,7 @@ position = Vector2(443.25, 150.5)
 shape = SubResource("RectangleShape2D_yqymq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(445.5, 150.5)
+position = Vector2(700, 150.5)
 scale = Vector2(0.160556, 0.116809)
 texture = ExtResource("2_iwnfa")
+offset = Vector2(200, 0)
