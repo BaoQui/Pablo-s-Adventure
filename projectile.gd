@@ -12,6 +12,7 @@ var start_position: Vector2
 var active: bool = true
 
 func _ready() -> void:
+	start_position = global_position
 	
 	# Rotate sprite to face direction
 	if rotate_to_direction:
