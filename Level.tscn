@@ -710,7 +710,7 @@ one_shot = true
 autostart = true
 
 [node name="Sprite2D" type="Sprite2D" parent="BouncingEnemy"]
-position = Vector2(62.1008, 28.7247)
+position = Vector2(61.6975, 29.1182)
 scale = Vector2(0.708683, 0.708291)
 texture = ExtResource("50_oybyf")
 
@@ -725,7 +725,7 @@ motion_scale = Vector2(0.5, 1)
 motion_mirroring = Vector2(465, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2(234.5, 48.75)
+position = Vector2(219, 40)
 scale = Vector2(0.242188, 0.256944)
 texture = ExtResource("48_608kq")
 
@@ -734,7 +734,7 @@ motion_scale = Vector2(0.8, 1)
 motion_mirroring = Vector2(465, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
-position = Vector2(234.5, 48.75)
+position = Vector2(256, 42)
 scale = Vector2(0.242188, 0.256944)
 texture = ExtResource("49_ndm73")
 
@@ -744,8 +744,170 @@ motion_mirroring = Vector2(465, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
 z_index = -1
-position = Vector2(224, 70)
+position = Vector2(215, 77)
 scale = Vector2(0.242188, 0.256944)
 texture = ExtResource("50_g4vxw")
+
+[node name="BouncingEnemy2" type="CharacterBody2D" parent="."]
+position = Vector2(89.6741, 11.9044)
+script = ExtResource("49_fddr8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BouncingEnemy2"]
+position = Vector2(53.8836, -12.6914)
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="BouncingEnemy" type="CharacterBody2D" parent="BouncingEnemy2/CollisionShape2D"]
+position = Vector2(111.145, 17.8651)
+script = ExtResource("49_fddr8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BouncingEnemy2/CollisionShape2D/BouncingEnemy"]
+position = Vector2(-9.12249, 9.67912)
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="BouncingEnemy2/CollisionShape2D/BouncingEnemy"]
+wait_time = 0.85
+one_shot = true
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="BouncingEnemy2/CollisionShape2D/BouncingEnemy"]
+position = Vector2(-7.50949, 9.67911)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("50_oybyf")
+
+[node name="PatternTimer" type="Timer" parent="BouncingEnemy2"]
+wait_time = 0.85
+one_shot = true
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="BouncingEnemy2"]
+position = Vector2(57.1096, -13.8719)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("50_oybyf")
+
+[node name="BouncingEnemy3" type="CharacterBody2D" parent="."]
+position = Vector2(283.929, 4.80851)
+script = ExtResource("49_fddr8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BouncingEnemy3"]
+position = Vector2(15.2842, 16.8334)
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="BouncingEnemy3"]
+wait_time = 0.85
+one_shot = true
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="BouncingEnemy3"]
+position = Vector2(16.4939, 16.4399)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("50_oybyf")
+
+[node name="BouncingEnemy4" type="CharacterBody2D" parent="."]
+position = Vector2(335.349, 18.1951)
+script = ExtResource("49_fddr8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BouncingEnemy4"]
+position = Vector2(-0.246321, 3.84023)
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="BouncingEnemy4"]
+wait_time = 0.85
+one_shot = true
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="BouncingEnemy4"]
+position = Vector2(0.560176, 3.84023)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("50_oybyf")
+
+[node name="Ground Enemy2" type="CharacterBody2D" parent="."]
+position = Vector2(109.674, -13.5537)
+script = ExtResource("41_ny14h")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground Enemy2"]
+position = Vector2(5.64552, 21.2484)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("43_ieltc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground Enemy2"]
+position = Vector2(4.83902, 21.2484)
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="Ground Enemy2"]
+wait_time = 0.85
+one_shot = true
+autostart = true
+
+[node name="Ground Enemy3" type="CharacterBody2D" parent="."]
+position = Vector2(238.038, -8.60088)
+script = ExtResource("41_ny14h")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground Enemy3"]
+position = Vector2(5.64552, 21.2484)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("43_ieltc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground Enemy3"]
+position = Vector2(4.83902, 21.2484)
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="Ground Enemy3"]
+wait_time = 0.85
+one_shot = true
+autostart = true
+
+[node name="Ground Enemy4" type="CharacterBody2D" parent="."]
+position = Vector2(474.055, -10.8483)
+script = ExtResource("41_ny14h")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground Enemy4"]
+position = Vector2(5.64552, 21.2484)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("43_ieltc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground Enemy4"]
+position = Vector2(4.83902, 21.2484)
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="Ground Enemy4"]
+wait_time = 0.85
+one_shot = true
+autostart = true
+
+[node name="Ground Enemy5" type="CharacterBody2D" parent="."]
+position = Vector2(398.422, -2.09563)
+script = ExtResource("41_ny14h")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground Enemy5"]
+position = Vector2(5.64552, 21.2484)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("43_ieltc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground Enemy5"]
+position = Vector2(4.83902, 21.2484)
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="Ground Enemy5"]
+wait_time = 0.85
+one_shot = true
+autostart = true
+
+[node name="Ground Enemy6" type="CharacterBody2D" parent="."]
+position = Vector2(362.339, -17.015)
+script = ExtResource("41_ny14h")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground Enemy6"]
+position = Vector2(5.64552, 21.2484)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("43_ieltc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground Enemy6"]
+position = Vector2(4.83902, 21.2484)
+shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="PatternTimer" type="Timer" parent="Ground Enemy6"]
+wait_time = 0.85
+one_shot = true
+autostart = true
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]
