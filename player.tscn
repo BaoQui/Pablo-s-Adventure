@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=4 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=58 format=4 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_8gr2b"]
@@ -40,6 +40,7 @@
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
+[ext_resource type="Script" uid="uid://cdaovoc72rf4t" path="res://CardInventory.gd" id="38_ieltc"]
 [ext_resource type="Texture2D" uid="uid://d0g84o2a72qq3" path="res://idle.png" id="39_vl8ci"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Script" uid="uid://cl3d70rt0yylt" path="res://parallax_background.gd" id="42_bfour"]
@@ -634,6 +635,9 @@ scale = Vector2(3.71964, 0.96015)
 position = Vector2(-3.58133, -8.70384)
 scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
+
+[node name="CardInventory" type="Node" parent="Player"]
+script = ExtResource("38_ieltc")
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(-1.61301, 37.7749)
