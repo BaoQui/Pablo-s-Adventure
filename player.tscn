@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=4 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=56 format=4 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_8gr2b"]
@@ -43,6 +43,7 @@
 [ext_resource type="Texture2D" uid="uid://d0g84o2a72qq3" path="res://idle.png" id="39_vl8ci"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Texture2D" uid="uid://cdij5xtw5bb1q" path="res://sr5z8f16caa261aws3(1).png" id="43_ieltc"]
+[ext_resource type="AudioStream" uid="uid://da5lk77yfhh4e" path="res://Trippy Trip Trop [4hD137dq0xg].mp3" id="47_8gr2b"]
 [ext_resource type="Texture2D" uid="uid://b7bs4kjhgljma" path="res://Assets/5. Mine Tileset - Starter Pack 16p/Mine_Tileset_1B_16.png" id="48_vl8ci"]
 [ext_resource type="Script" uid="uid://bvro0on48dsxr" path="res://bouncyenemy.gd" id="49_fddr8"]
 [ext_resource type="Texture2D" uid="uid://j0hw477eqgjd" path="res://pixil-frame-0.png" id="50_oybyf"]
@@ -733,5 +734,8 @@ texture = ExtResource("50_oybyf")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 visible = false
+
+[node name="TrippyTripTrop[4hD137Dq0Xg]" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("47_8gr2b")
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]
