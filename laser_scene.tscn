@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://x8dynfu3b7r3"]
+
+[ext_resource type="Script" uid="uid://cru20oim7clh6" path="res://LaserBeam.gd" id="1_eho3r"]
+[ext_resource type="Texture2D" uid="uid://bw4jh2txdbo5w" path="res://pngkey.com-lazer-beam-png-8162960.png" id="2_wnml6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yqymq"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="LaserBeam" type="Area2D" parent="."]
+collision_layer = 2
+script = ExtResource("1_eho3r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LaserBeam"]
+shape = SubResource("RectangleShape2D_yqymq")
+
+[node name="Sprite2D" type="Sprite2D" parent="LaserBeam"]
+position = Vector2(205.25, 114.25)
+scale = Vector2(0.481037, 0.349003)
+texture = ExtResource("2_wnml6")
