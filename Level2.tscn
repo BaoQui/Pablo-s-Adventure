@@ -995,6 +995,7 @@ radius = 15.0
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(-62, 142)
 scale = Vector2(0.357132, 0.372261)
+collision_mask = 3
 script = ExtResource("1_d8gnr")
 base_move_speed = 150.0
 move_speed = 150.0
@@ -1054,7 +1055,7 @@ position = Vector2(-246.04, 318.917)
 shape = SubResource("RectangleShape2D_msd0y")
 
 [node name="Right_Wall" type="CollisionShape2D" parent="Floor"]
-position = Vector2(2545.43, 331.469)
+position = Vector2(2551.79, 331.469)
 shape = SubResource("RectangleShape2D_msd0y")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
@@ -1103,12 +1104,12 @@ script = ExtResource("43_j286a")
 laser_scene = ExtResource("44_fi16w")
 
 [node name="EyeSprite" type="Sprite2D" parent="EyeBoss"]
-position = Vector2(818, 111.25)
+position = Vector2(780, 113)
 scale = Vector2(0.812498, 0.828125)
 texture = ExtResource("45_vho2s")
 
 [node name="Eye Coliision" type="CollisionShape2D" parent="EyeBoss"]
-position = Vector2(819, 112)
+position = Vector2(779, 114)
 shape = SubResource("CircleShape2D_annok")
 
 [node name="MoveTimer" type="Timer" parent="EyeBoss"]
