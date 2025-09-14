@@ -142,10 +142,11 @@ func _on_animation_finished() -> void:
 	elif current_animation == "dash":
 		is_dashing = false
 		
+# Player script
 func _on_punch_hitbox_body_entered(body: Node) -> void:
-	# This will be called whenever the punch hitbox touches another body
 	if body.has_method("take_damage"):
-		body.take_damage(punch_damage)
+		body.take_damage(punch_damage, $PunchHitbox.global_position)
+
 
 func start_dash(input_dir: float) -> void:
 	if input_dir == 0:
