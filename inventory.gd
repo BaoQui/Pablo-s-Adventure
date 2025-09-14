@@ -1,11 +1,16 @@
 extends Control
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	# Set up the initial state. The pause menu is hidden at the start.
+	visible = false
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_inventory"):
+		toggle_visibility()
+
+
+func toggle_visibility() -> void:
+	visible = not visible
+	get_tree().paused = visible  # This line is key. It pauses the game when the menu is visible.
