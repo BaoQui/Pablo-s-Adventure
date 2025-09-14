@@ -1,7 +1,8 @@
 extends CharacterBody2D
 
 @onready var health_label: Label = $"../CanvasLayer/health_label"
-
+# --- Kill Count ---
+@export var kill_count: int = 0
 
 # --- Movement settings ---
 @export var base_move_speed: float = 300.0

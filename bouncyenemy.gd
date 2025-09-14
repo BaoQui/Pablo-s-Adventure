@@ -135,9 +135,13 @@ func take_damage(damage_amount: int, from_point: Vector2 = Vector2.INF) -> void:
 
 	if health <= 0:
 		die()
+		
 
 func die():
 	print("Bouncer defeated!")
+	var player = get_tree().get_first_node_in_group("Player")
+	if player:
+		player.kill_count += 1
 	queue_free()
 
 # --- Hurt player on collision ---
@@ -145,7 +149,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		body.do_damage(10, global_position)
 
-		var knockback_strength_x: float = 800.0
+		var knockback_strength_x: float = 600.0
 		var knockback_strength_y: float = 300.0
 
 		if body.global_position.x > global_position.x:
