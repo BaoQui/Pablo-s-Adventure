@@ -1,7 +1,8 @@
-[gd_scene load_steps=38 format=3 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=39 format=3 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://c1h5hxuv6aq7x" path="res://Individual Sprite/idle/Warrior_Idle_1.png" id="2_efrwb"]
+[ext_resource type="PackedScene" uid="uid://c80q0mof47f1a" path="res://projectile.tscn" id="2_hl5qd"]
 [ext_resource type="Texture2D" uid="uid://dv6ctc6fhyg6u" path="res://icon.svg" id="2_onrkg"]
 [ext_resource type="Texture2D" uid="uid://bucp1eywy5d01" path="res://Individual Sprite/idle/Warrior_Idle_2.png" id="3_hiqhm"]
 [ext_resource type="Script" uid="uid://mom5b183pa1p" path="res://dummy.gd" id="3_sweqy"]
@@ -47,7 +48,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"fall",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -70,7 +71,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -84,7 +85,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"jump",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -113,7 +114,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"punch",
-"speed": 2.0
+"speed": 1.35
 }, {
 "frames": [{
 "duration": 1.0,
@@ -142,7 +143,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 11.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sweqy"]
@@ -163,11 +164,14 @@ scale = Vector2(2.47984, 2.54137)
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(-44.761, 28.7247)
-scale = Vector2(0.357132, 0.367257)
+scale = Vector2(0.354548, 0.371178)
 script = ExtResource("1_4flbx")
 deceleration = 6000.0
 jump_force = 400.0
 gravity = 800.0
+projectile_scene = ExtResource("2_hl5qd")
+projectile_distance = 400.0
+projectile_speed = 1500.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(6.77475, -4.28557)
@@ -183,6 +187,7 @@ shape = SubResource("CapsuleShape2D_sweqy")
 [node name="PunchHitbox" type="Area2D" parent="Player"]
 position = Vector2(28, 3)
 scale = Vector2(3.71964, 0.96015)
+collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/PunchHitbox"]
 position = Vector2(-3.58133, -8.70384)
@@ -191,7 +196,6 @@ shape = SubResource("CapsuleShape2D_2hs0m")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(141.143, 43.9285)
-scale = Vector2(1, 1)
 zoom = Vector2(1.5, 1.5)
 limit_top = 0
 limit_bottom = 0
@@ -207,6 +211,8 @@ shape = SubResource("WorldBoundaryShape2D_onrkg")
 [node name="Dummy" type="CharacterBody2D" parent="."]
 position = Vector2(55.2455, 26.3637)
 scale = Vector2(0.901565, 0.901565)
+collision_layer = 2
+collision_mask = 4
 script = ExtResource("3_sweqy")
 
 [node name="Sprite2D" type="Sprite2D" parent="Dummy"]

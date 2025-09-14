@@ -18,21 +18,29 @@ extends CharacterBody2D
 # --- Punch settings ---
 @export var punch_damage: int = 10
 @export var punch_cooldown: float = 0.3
-@export var punch_duration: float = 0.25 # Duration of punch in seconds
-@export var air_punch_push: float = 50.0  # Optional small forward push in air
+@export var punch_duration: float = 0.25
+@export var air_punch_push: float = 50.0
 
+# --- Projectile settings ---
+@export var projectile_scene: PackedScene
+@export var projectile_distance: float = 500.0
+@export var projectile_speed: float = 600.0
+@export var projectile_damage: int = 20
+@export var projectile_cooldown: float = 0.5
+
+# --- Node references ---
 @onready var punch_hitbox = $PunchHitbox
 @onready var anim = $AnimatedSprite2D
 
+# --- State variables ---
 var punch_timer: float = 0.0
+var projectile_timer: float = 0.0
 var coyote_timer: float = 0.0
 var dash_timer: float = 0.0
 var dash_cooldown_timer: float = 0.0
 var current_animation: String = "idle"
 var is_dashing: bool = false
 var is_punching: bool = false
-
-# --- Air attack freeze ---
 var freeze_velocity: bool = false
 var stored_velocity: Vector2 = Vector2.ZERO
 
@@ -42,19 +50,18 @@ func _ready() -> void:
 		punch_hitbox.body_entered.connect(_on_punch_hitbox_body_entered)
 	if not anim.animation_finished.is_connected(_on_animation_finished):
 		anim.animation_finished.connect(_on_animation_finished)
-
 	current_animation = ""
 	play_animation("idle")
 
 func _physics_process(delta: float) -> void:
 	punch_timer -= delta
+	projectile_timer -= delta
 	dash_timer -= delta
 	dash_cooldown_timer -= delta
 	
 	var input_dir := Input.get_axis("ui_left", "ui_right")
-	
+
 	if freeze_velocity:
-		# Freeze all movement during air punch
 		if not is_on_floor():
 			var push = (-1 if anim.flip_h else 1) * air_punch_push
 			velocity = Vector2(push, 0)
@@ -91,7 +98,6 @@ func _physics_process(delta: float) -> void:
 		velocity.y = -jump_force
 		coyote_timer = 0
 
-	# --- Variable jump height ---
 	if Input.is_action_just_released("ui_accept") and velocity.y < 0:
 		velocity.y *= jump_cut_multiplier
 
@@ -100,13 +106,18 @@ func _physics_process(delta: float) -> void:
 		punch()
 		punch_timer = punch_cooldown
 
+	# --- Shoot projectile (with cooldown) ---
+	if Input.is_action_just_pressed("ui_shoot") and projectile_timer <= 0:
+		shoot_projectile()
+		projectile_timer = projectile_cooldown
+
 	update_animation(input_dir)
 	move_and_slide()
 
+# --- Animation ---
 func update_animation(input_dir: float) -> void:
 	if is_punching or is_dashing:
 		return
-	
 	if not is_on_floor():
 		if velocity.y < 0:
 			play_animation("jump")
@@ -130,13 +141,12 @@ func _on_animation_finished() -> void:
 			freeze_velocity = false
 	elif current_animation == "dash":
 		is_dashing = false
-		
+
 func _on_punch_hitbox_body_entered(body: Node) -> void:
-	# This will be called whenever the punch hitbox touches another body
 	if body.has_method("take_damage"):
 		body.take_damage(punch_damage)
 
-
+# --- Dash ---
 func start_dash(input_dir: float) -> void:
 	if input_dir == 0:
 		input_dir = 1 if not anim.flip_h else -1
@@ -149,36 +159,56 @@ func start_dash(input_dir: float) -> void:
 func end_dash() -> void:
 	is_dashing = false
 
+# --- Punch ---
 func punch() -> void:
-	if anim.flip_h:
-		punch_hitbox.position.x = -abs(punch_hitbox.position.x)
-	else:
-		punch_hitbox.position.x = abs(punch_hitbox.position.x)
-	
+	punch_hitbox.position.x = abs(punch_hitbox.position.x) * (-1 if anim.flip_h else 1)
 	is_punching = true
 	punch_hitbox.monitoring = true
 
-	# Freeze all movement mid-air
 	if not is_on_floor():
 		freeze_velocity = true
 		stored_velocity = velocity
 		velocity = Vector2.ZERO
 
-	# Calculate punch speed for snappy attack
 	var frame_count = anim.sprite_frames.get_frame_count("punch")
 	var punch_speed = frame_count / punch_duration
 	play_animation("punch", punch_speed)
 
-	# Disable hitbox shortly after punch starts
 	var hitbox_timer = get_tree().create_timer(0.1)
 	hitbox_timer.timeout.connect(func() -> void:
 		punch_hitbox.monitoring = false
 	)
 
-	# Safety timer to unfreeze velocity slightly before animation ends
 	var punch_reset_timer = get_tree().create_timer(punch_duration * 0.95)
 	punch_reset_timer.timeout.connect(func() -> void:
 		is_punching = false
 		if freeze_velocity:
 			freeze_velocity = false
 	)
+
+# --- Projectile ---
+func shoot_projectile() -> void:
+	if projectile_scene == null:
+		print("No projectile scene assigned!")
+		return
+
+	var projectile = projectile_scene.instantiate()
+	
+	# Add projectile to the scene tree (same parent as player)
+	get_parent().add_child(projectile)
+
+	# Calculate spawn position (slightly in front of player)
+	var spawn_offset = Vector2(30, 0)  # 30 pixels in front
+	if anim.flip_h:
+		spawn_offset.x *= -1
+	
+	projectile.global_position = global_position + spawn_offset
+
+	# Set projectile properties
+	projectile.direction = Vector2.RIGHT if not anim.flip_h else Vector2.LEFT
+	projectile.max_distance = projectile_distance
+	projectile.speed = projectile_speed
+	projectile.damage = projectile_damage
+
+	# Debug confirmation
+	print("Projectile fired! Position: ", projectile.global_position, " Direction: ", projectile.direction)
