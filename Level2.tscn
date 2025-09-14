@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=4 uid="uid://chydbrbbst50c"]
+[gd_scene load_steps=56 format=4 uid="uid://chydbrbbst50c"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_d8gnr"]
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_ytr4e"]
@@ -42,6 +42,9 @@
 [ext_resource type="Texture2D" uid="uid://gxmq6j52td8a" path="res://Assets/game_background_2/layers/clouds_3.png" id="41_apgbi"]
 [ext_resource type="Texture2D" uid="uid://ca6k3s2vd30f4" path="res://Assets/5. Mine Tileset - Starter Pack 16p/2_Mine_Tileset_1_Background_16.png" id="41_gme1u"]
 [ext_resource type="Texture2D" uid="uid://o4rt3nh6q77h" path="res://Assets/5. Mine Tileset - Starter Pack 16p/0_Template_Tileset_16.png" id="42_ae8kp"]
+[ext_resource type="Script" uid="uid://dh0yvhsmha0nj" path="res://EyeBoss.gd" id="43_j286a"]
+[ext_resource type="PackedScene" uid="uid://b2uigbb0t52or" path="res://LaserBeam.tscn" id="44_fi16w"]
+[ext_resource type="Texture2D" uid="uid://bngq85j8udssc" path="res://sr5z6dc0e5c7ccaws3.png" id="45_vho2s"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8615v"]
 animations = [{
@@ -984,6 +987,9 @@ tile_size = Vector2i(4, 4)
 physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_apgbi")
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_annok"]
+radius = 15.0
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="."]
@@ -1089,5 +1095,24 @@ tile_set = SubResource("TileSet_apgbi")
 [node name="TileMapLayer2" type="TileMapLayer" parent="."]
 tile_map_data = PackedByteArray("AAD+/yMAAQABAAAAAAD//yMAAQABAAAAAAAAACMAAQABAAAAAAABACMAAQABAAAAAAACACMAAQABAAAAAAADACMAAQABAAAAAAAEACMAAQABAAAAAAAFACMAAQABAAAAAAAMAB8AAQABAAAAAAANAB8AAQABAAAAAAAOAB8AAQABAAAAAAAPAB8AAQABAAAAAAAQAB8AAQABAAAAAAARAB8AAQABAAAAAAASAB8AAQABAAAAAAATAB8AAQABAAAAAAAUAB8AAQABAAAAAAAVAB8AAQABAAAAAAAWAB8AAQABAAAAAAAXAB8AAQABAAAAAAAgABoAAQABAAAAAAAhABoAAQABAAAAAAAiABoAAQABAAAAAAAjABoAAQABAAAAAAAkABoAAQABAAAAAAAlABoAAQABAAAAAAAmABoAAQABAAAAAAAnABoAAQABAAAAAAAoABoAAQABAAAAAAApABoAAQABAAAAAAAqABoAAQABAAAAAAAzACAAAQABAAAAAAA0ACAAAQABAAAAAAA1ACAAAQABAAAAAAA2ACAAAQABAAAAAAA3ACAAAQABAAAAAAA4ACAAAQABAAAAAAA5ACAAAQABAAAAAAA6ACAAAQABAAAAAAA7ACAAAQABAAAAAABaACMAAQABAAAAAABbACMAAQABAAAAAABcACMAAQABAAAAAABdACMAAQABAAAAAABeACMAAQABAAAAAABfACMAAQABAAAAAABgACMAAQABAAAAAABhACMAAQABAAAAAABiACMAAQABAAAAAABjACMAAQABAAAAAABkACMAAQABAAAAAABlACMAAQABAAAAAABuAB0AAQABAAAAAABvAB0AAQABAAAAAABwAB0AAQABAAAAAABxAB0AAQABAAAAAAByAB0AAQABAAAAAABzAB0AAQABAAAAAAB0AB0AAQABAAAAAAB1AB0AAQABAAAAAAB2AB0AAQABAAAAAAB8ACMAAQABAAAAAAB9ACMAAQABAAAAAAB+ACMAAQABAAAAAAB/ACMAAQABAAAAAACAACMAAQABAAAAAACBACMAAQABAAAAAACCACMAAQABAAAAAACmACQAAQABAAAAAACnACQAAQABAAAAAACoACQAAQABAAAAAACpACQAAQABAAAAAACqACQAAQABAAAAAACrACQAAQABAAAAAACsACQAAQABAAAAAACtACQAAQABAAAAAACuACQAAQABAAAAAACvACQAAQABAAAAAACaAB4AAQABAAAAAACbAB4AAQABAAAAAACcAB4AAQABAAAAAACdAB4AAQABAAAAAACeAB4AAQABAAAAAACfAB4AAQABAAAAAACgAB4AAQABAAAAAAChAB4AAQABAAAAAACiAB4AAQABAAAAAAA=")
 tile_set = SubResource("TileSet_f7eu1")
+
+[node name="EyeBoss" type="CharacterBody2D" parent="."]
+motion_mode = 1
+script = ExtResource("43_j286a")
+laser_scene = ExtResource("44_fi16w")
+
+[node name="EyeSprite" type="Sprite2D" parent="EyeBoss"]
+position = Vector2(818, 111.25)
+scale = Vector2(0.812498, 0.828125)
+texture = ExtResource("45_vho2s")
+
+[node name="Eye Coliision" type="CollisionShape2D" parent="EyeBoss"]
+position = Vector2(819, 112)
+shape = SubResource("CircleShape2D_annok")
+
+[node name="MoveTimer" type="Timer" parent="EyeBoss"]
+one_shot = true
+
+[node name="ShootTimer" type="Timer" parent="EyeBoss"]
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]
