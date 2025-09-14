@@ -73,7 +73,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"dash",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -87,7 +87,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"fall",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -110,7 +110,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 9.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -124,7 +124,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"jump",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -182,7 +182,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 12.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sweqy"]
@@ -209,6 +209,8 @@ scale = Vector2(2.47984, 2.54137)
 position = Vector2(-44.761, 28.7247)
 scale = Vector2(0.357132, 0.367257)
 script = ExtResource("1_4flbx")
+move_speed = 200.0
+acceleration = 1700.0
 deceleration = 6000.0
 jump_force = 400.0
 gravity = 800.0
@@ -216,7 +218,7 @@ gravity = 800.0
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(6.77475, -4.28557)
 sprite_frames = SubResource("SpriteFrames_xry5e")
-animation = &"fall"
+animation = &"idle"
 speed_scale = 30.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
