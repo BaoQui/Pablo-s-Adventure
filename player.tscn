@@ -1,6 +1,7 @@
-[gd_scene load_steps=53 format=3 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=54 format=3 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
+[ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_8gr2b"]
 [ext_resource type="Texture2D" uid="uid://dxoy7p0xhnjag" path="res://Individual Sprite/Dash/Warrior_Dash_1.png" id="2_331ug"]
 [ext_resource type="Texture2D" uid="uid://c1h5hxuv6aq7x" path="res://Individual Sprite/idle/Warrior_Idle_1.png" id="2_efrwb"]
 [ext_resource type="Texture2D" uid="uid://dv6ctc6fhyg6u" path="res://icon.svg" id="2_onrkg"]
@@ -214,6 +215,8 @@ acceleration = 1700.0
 deceleration = 6000.0
 jump_force = 400.0
 gravity = 800.0
+projectile_scene = ExtResource("2_8gr2b")
+projectile_damage = 300
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(6.77475, -4.28557)

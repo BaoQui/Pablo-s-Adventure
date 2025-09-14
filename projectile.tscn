@@ -1,10 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://b3dlo8jdhs4sj"]
+[gd_scene load_steps=4 format=3 uid="uid://b3dlo8jdhs4sj"]
+
+[ext_resource type="Texture2D" uid="uid://45n2neymal7h" path="res://8BitDeckAssets.png" id="1_a85iw"]
+[ext_resource type="Script" uid="uid://cefeyn0q4ygo1" path="res://projectile.gd" id="1_qxf0c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_akgne"]
+size = Vector2(13.5807, 10)
 
 [node name="Node2D" type="Area2D"]
+script = ExtResource("1_qxf0c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.38419e-07, 0)
+scale = Vector2(1.03087, 1)
 shape = SubResource("RectangleShape2D_akgne")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.57079
+scale = Vector2(0.31, 0.31)
+texture = ExtResource("1_a85iw")
+region_enabled = true
+region_rect = Rect2(0.894339, 0, 32.6057, 46.0246)
