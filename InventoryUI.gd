@@ -39,7 +39,7 @@ func setup_ui():
 		inventory_slots.append(slot)
 
 func create_inventory_slot(is_hand_slot: bool, slot_index: int) -> InventorySlot:
-	var slot = preload("res://ui/InventorySlot.tscn").instantiate()
+	var slot = preload("res://InventorySlot.tscn").instantiate()
 	slot.is_hand_slot = is_hand_slot
 	slot.slot_index = slot_index
 	slot.inventory_ui = self
