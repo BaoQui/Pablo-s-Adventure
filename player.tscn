@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_8gr2b"]
 [ext_resource type="Texture2D" uid="uid://dxoy7p0xhnjag" path="res://Individual Sprite/Dash/Warrior_Dash_1.png" id="2_331ug"]
 [ext_resource type="Texture2D" uid="uid://c1h5hxuv6aq7x" path="res://Individual Sprite/idle/Warrior_Idle_1.png" id="2_efrwb"]
-[ext_resource type="Texture2D" uid="uid://dv6ctc6fhyg6u" path="res://icon.svg" id="2_onrkg"]
 [ext_resource type="Texture2D" uid="uid://bucp1eywy5d01" path="res://Individual Sprite/idle/Warrior_Idle_2.png" id="3_hiqhm"]
 [ext_resource type="Texture2D" uid="uid://e8utffg0cvvx" path="res://Individual Sprite/Dash/Warrior_Dash_2.png" id="3_ny14h"]
 [ext_resource type="Script" uid="uid://mom5b183pa1p" path="res://dummy.gd" id="3_sweqy"]
@@ -41,10 +40,11 @@
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
+[ext_resource type="Texture2D" uid="uid://d0g84o2a72qq3" path="res://idle.png" id="39_vl8ci"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Script" uid="uid://cl3d70rt0yylt" path="res://parallax_background.gd" id="42_bfour"]
 [ext_resource type="Texture2D" uid="uid://bp0cad4vc5bn1" path="res://Assets/game_background_2/layers/rocks_1.png" id="42_qwsg1"]
-[ext_resource type="Texture2D" uid="uid://nuccvasjd2w6" path="res://Assets/game_background_2/layers/sky.png" id="43_1xqrm"]
+[ext_resource type="Texture2D" uid="uid://cdij5xtw5bb1q" path="res://sr5z8f16caa261aws3(1).png" id="43_ieltc"]
 [ext_resource type="Texture2D" uid="uid://gxmq6j52td8a" path="res://Assets/game_background_2/layers/clouds_3.png" id="44_bfour"]
 [ext_resource type="Texture2D" uid="uid://csem2xvryjxo4" path="res://Assets/game_background_2/layers/rocks_2.png" id="46_8gr2b"]
 [ext_resource type="Texture2D" uid="uid://b7bs4kjhgljma" path="res://Assets/5. Mine Tileset - Starter Pack 16p/Mine_Tileset_1B_16.png" id="48_vl8ci"]
@@ -202,6 +202,7 @@ distance = -149.814
 size = Vector2(15.3849, 419.81)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hs0m"]
+size = Vector2(12.1687, 11.2979)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ieltc"]
 texture = ExtResource("48_vl8ci")
@@ -640,7 +641,7 @@ scale = Vector2(0.31453, 0.239012)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
 modulate = Color(0.583442, 0.55379, 0.280108, 1)
-position = Vector2(19.2312, -162.985)
+position = Vector2(19.2312, -97.1325)
 rotation = 3.14159
 shape = SubResource("WorldBoundaryShape2D_onrkg")
 
@@ -657,19 +658,21 @@ shape = SubResource("RectangleShape2D_331ug")
 position = Vector2(248.723, -156.4)
 shape = SubResource("RectangleShape2D_331ug")
 
-[node name="Dummy" type="CharacterBody2D" parent="."]
+[node name="Flying Enemy" type="CharacterBody2D" parent="."]
 position = Vector2(55.2455, 26.3637)
 scale = Vector2(0.901565, 0.901565)
 script = ExtResource("3_sweqy")
 
-[node name="Sprite2D" type="Sprite2D" parent="Dummy"]
-scale = Vector2(0.16319, 0.177116)
-texture = ExtResource("2_onrkg")
+[node name="Sprite2D" type="Sprite2D" parent="Flying Enemy"]
+position = Vector2(0.670921, -4.3107)
+scale = Vector2(0.698875, 0.715953)
+texture = ExtResource("39_vl8ci")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Dummy"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Flying Enemy"]
+position = Vector2(-0.624863, -4.33958)
 shape = SubResource("RectangleShape2D_2hs0m")
 
-[node name="PatternTimer" type="Timer" parent="Dummy"]
+[node name="PatternTimer" type="Timer" parent="Flying Enemy"]
 wait_time = 2.5
 one_shot = true
 autostart = true
@@ -683,17 +686,19 @@ offset_bottom = -34.627
 scale = Vector2(0.31, 0.31)
 script = ExtResource("33_hiqhm")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="Ground Enemy" type="CharacterBody2D" parent="."]
 script = ExtResource("41_ny14h")
 
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
-scale = Vector2(0.16319, 0.177116)
-texture = ExtResource("2_onrkg")
+[node name="Sprite2D" type="Sprite2D" parent="Ground Enemy"]
+position = Vector2(14.0899, 0.629489)
+scale = Vector2(0.708683, 0.708291)
+texture = ExtResource("43_ieltc")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground Enemy"]
+position = Vector2(12.9041, 0.786977)
 shape = SubResource("RectangleShape2D_2hs0m")
 
-[node name="PatternTimer" type="Timer" parent="CharacterBody2D"]
+[node name="PatternTimer" type="Timer" parent="Ground Enemy"]
 wait_time = 2.5
 one_shot = true
 autostart = true
@@ -714,7 +719,7 @@ motion_mirroring = Vector2(340, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 z_index = 3
-position = Vector2(179, 103)
+position = Vector2(142, -81)
 scale = Vector2(0.186979, 0.188889)
 texture = ExtResource("42_qwsg1")
 
@@ -722,17 +727,12 @@ texture = ExtResource("42_qwsg1")
 motion_scale = Vector2(0.2, 1)
 motion_mirroring = Vector2(340, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
-position = Vector2(179, 103)
-scale = Vector2(0.186979, 0.188889)
-texture = ExtResource("43_1xqrm")
-
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.5, 1)
 motion_mirroring = Vector2(340, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
-position = Vector2(179, 103)
+position = Vector2(194, -69)
 scale = Vector2(0.186979, 0.188889)
 texture = ExtResource("44_bfour")
 
@@ -741,8 +741,8 @@ motion_scale = Vector2(0.7, 0.7)
 motion_mirroring = Vector2(340, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
-position = Vector2(179, 103)
-scale = Vector2(0.186979, 0.188889)
+position = Vector2(147, -111)
+scale = Vector2(0.142448, 0.138889)
 texture = ExtResource("46_8gr2b")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
