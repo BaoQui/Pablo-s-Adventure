@@ -40,6 +40,7 @@
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
+[ext_resource type="Script" uid="uid://cdaovoc72rf4t" path="res://CardInventory.gd" id="38_ieltc"]
 [ext_resource type="Texture2D" uid="uid://d0g84o2a72qq3" path="res://idle.png" id="39_vl8ci"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Script" uid="uid://cl3d70rt0yylt" path="res://parallax_background.gd" id="42_bfour"]
@@ -48,8 +49,12 @@
 [ext_resource type="Texture2D" uid="uid://gxmq6j52td8a" path="res://Assets/game_background_2/layers/clouds_3.png" id="44_bfour"]
 [ext_resource type="Texture2D" uid="uid://csem2xvryjxo4" path="res://Assets/game_background_2/layers/rocks_2.png" id="46_8gr2b"]
 [ext_resource type="Texture2D" uid="uid://b7bs4kjhgljma" path="res://Assets/5. Mine Tileset - Starter Pack 16p/Mine_Tileset_1B_16.png" id="48_vl8ci"]
+<<<<<<< HEAD
 [ext_resource type="Script" uid="uid://bvro0on48dsxr" path="res://bouncyenemy.gd" id="49_fddr8"]
 [ext_resource type="Texture2D" uid="uid://j0hw477eqgjd" path="res://pixil-frame-0.png" id="50_oybyf"]
+=======
+[ext_resource type="PackedScene" uid="uid://cxwy28o2fnsrx" path="res://InventoryUI.tscn" id="50_fddr8"]
+>>>>>>> e5b4cad239d6050bb360af80b19144bc507e14fb
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xry5e"]
 animations = [{
@@ -637,6 +642,17 @@ position = Vector2(-3.58133, -8.70384)
 scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
 
+[node name="CardInventory" type="Node" parent="Player"]
+script = ExtResource("38_ieltc")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+modulate = Color(0.895935, 0, 0.317969, 1)
+position = Vector2(138.884, -32.7679)
+scale = Vector2(1, 0.986558)
+zoom = Vector2(1.5, 1.5)
+limit_top = 0
+limit_bottom = 0
+
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(-1.61301, 37.7749)
 scale = Vector2(0.31453, 0.239012)
@@ -705,14 +721,6 @@ wait_time = 0.85
 one_shot = true
 autostart = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
-modulate = Color(0.895935, 0, 0.317969, 1)
-position = Vector2(4.83902, 16.5265)
-scale = Vector2(0.357132, 0.367257)
-zoom = Vector2(1.5, 1.5)
-limit_top = 0
-limit_bottom = 0
-
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 script = ExtResource("42_bfour")
 
@@ -751,6 +759,7 @@ texture = ExtResource("46_8gr2b")
 tile_map_data = PackedByteArray("AADw/woAAQABAAAAAADx/woAAQABAAAAAADy/woAAQABAAAAAADz/woAAQABAAAAAAD0/woAAQABAAAAAAD1/woAAQABAAAAAAD2/woAAQABAAAAAAD3/woAAQABAAAAAAD4/woAAQABAAAAAAD5/woAAQABAAAAAAD6/woAAQABAAAAAAD7/woAAQABAAAAAAD8/woAAQABAAAAAAD9/woAAQAEAAMAAAD+/woAAQAEAAMAAAD//woAAQAEAAMAAAAAAAoAAQAEAAMAAAABAAoAAQAEAAMAAAACAAoAAQAEAAMAAAADAAoAAQAEAAMAAAAEAAoAAQAEAAMAAAAFAAoAAQAEAAMAAAAGAAoAAQAEAAMAAAAHAAoAAQAEAAMAAAAIAAoAAQAEAAMAAAAJAAoAAQAEAAMAAAAKAAoAAQAEAAMAAAALAAoAAQABAAAAAAAMAAoAAQABAAAAAAANAAoAAQABAAAAAAAOAAoAAQABAAAAAAAPAAoAAQABAAAAAAAQAAoAAQABAAAAAAARAAoAAQABAAAAAAASAAoAAQABAAAAAAD9/wkAAQABAAEAAAD+/wkAAQABAAEAAAD//wgAAQABAAEAAAAAAAgAAQABAAEAAAABAAgAAQABAAEAAAACAAgAAQABAAEAAAADAAcAAQABAAEAAAAEAAcAAQABAAEAAAAFAAgAAQABAAEAAAAGAAgAAQABAAEAAAAHAAgAAQABAAEAAAAIAAgAAQABAAAAAAAJAAkAAQABAAAAAAAKAAkAAQABAAAAAAALAAkAAQABAAAAAAAIAAkAAQAEAAMAAAAHAAkAAQAEAAMAAAAGAAkAAQAEAAMAAAAFAAkAAQAEAAMAAAAEAAkAAQAEAAMAAAADAAkAAQAEAAMAAAACAAkAAQAEAAMAAAABAAkAAQAEAAMAAAAAAAkAAQAEAAMAAAD//wkAAQAEAAMAAAADAAgAAQAEAAMAAAAEAAgAAQAEAAMAAAD8/wkAAQABAAAAAAD9/wgAAQABAAAAAAD+/wgAAQABAAAAAAD//wcAAQABAAAAAAAAAAcAAQABAAAAAAABAAcAAQABAAAAAAACAAcAAQABAAAAAAADAAYAAQABAAAAAAAEAAYAAQABAAAAAAAFAAYAAQABAAAAAAAGAAYAAQABAAAAAAAFAAcAAQABAAAAAAAGAAcAAQABAAAAAAAHAAcAAQABAAAAAAAIAAcAAQABAAAAAAAJAAgAAQABAAAAAADw/wkAAQABAAAAAADx/wkAAQABAAAAAADy/wkAAQABAAAAAADz/wkAAQABAAAAAAD0/wkAAQABAAAAAAD1/wkAAQABAAAAAAD2/wkAAQABAAAAAAD3/wkAAQABAAAAAAD4/wkAAQABAAAAAAD5/wkAAQABAAAAAAD6/wkAAQABAAAAAAD7/wkAAQABAAAAAAAMAAkAAQABAAAAAAANAAkAAQABAAAAAAAOAAkAAQABAAAAAAAPAAkAAQABAAAAAAAQAAkAAQABAAAAAAARAAkAAQABAAAAAAASAAkAAQABAAAAAAA=")
 tile_set = SubResource("TileSet_fddr8")
 
+<<<<<<< HEAD
 [node name="BouncingEnemy" type="CharacterBody2D" parent="."]
 script = ExtResource("49_fddr8")
 
@@ -767,5 +776,10 @@ autostart = true
 position = Vector2(62.1008, 28.7247)
 scale = Vector2(0.708683, 0.708291)
 texture = ExtResource("50_oybyf")
+=======
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" parent="CanvasLayer" instance=ExtResource("50_fddr8")]
+>>>>>>> e5b4cad239d6050bb360af80b19144bc507e14fb
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]
