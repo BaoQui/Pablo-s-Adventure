@@ -631,6 +631,7 @@ gravity = 800.0
 projectile_scene = ExtResource("2_8gr2b")
 projectile_distance = 200.0
 projectile_speed = 300.0
+inventory_ui_scene = ExtResource("38_ndm73")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(6.77475, -4.28557)
@@ -661,6 +662,7 @@ limit_top = 0
 limit_bottom = 0
 
 [node name="InventoryUI" parent="Player" instance=ExtResource("38_ndm73")]
+visible = false
 offset_left = 248.411
 offset_top = -81.3909
 offset_right = 248.411

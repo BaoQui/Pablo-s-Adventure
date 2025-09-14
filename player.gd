@@ -43,6 +43,9 @@ extends CharacterBody2D
 @export var base_money_multiplier: float = 1.0
 @export var money_multiplier: float = 1.0
 
+# --- UI References ---
+@export var inventory_ui_scene: PackedScene
+
 # --- Node references ---
 @onready var punch_hitbox: Area2D = $PunchHitbox
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
@@ -60,6 +63,9 @@ var is_punching: bool = false
 var freeze_velocity: bool = false
 var stored_velocity: Vector2 = Vector2.ZERO
 var can_dash: bool = true
+
+# --- UI Variables ---
+var inventory_ui: Control = null
 
 # --- Card effects ---
 var duelist_hit_streak: int = 0
@@ -84,7 +90,31 @@ func _ready() -> void:
 	# Add to Player group
 	add_to_group("Player")
 	update_health_display()
+	
+	# Setup inventory UI
+	setup_inventory_ui()
+	
+	# Test: Add some cards to the inventory
+	call_deferred("add_test_cards")
 
+func setup_inventory_ui():
+	if inventory_ui_scene:
+		inventory_ui = inventory_ui_scene.instantiate()
+		get_tree().root.add_child(inventory_ui)
+		inventory_ui.inventory_closed.connect(_on_inventory_closed)
+		print("Inventory UI setup complete")
+	else:
+		print("Warning: inventory_ui_scene not assigned!")
+
+func add_test_cards():
+	if card_inventory:
+		# Add a few test cards
+		for i in range(3):
+			var test_card = card_inventory.generate_random_drop()
+			card_inventory.add_card_to_inventory(test_card)
+			print("Added test card: ", test_card.card_name)
+		
+		print("Test cards added. Press I to open inventory!")
 
 func _physics_process(delta: float) -> void:
 	# --- timers ---
@@ -155,8 +185,8 @@ func _physics_process(delta: float) -> void:
 		projectile_timer = projectile_cooldown
 
 	# --- Open inventory ---
-	if Input.is_action_just_pressed("ui_cancel"):
-		open_inventory_menu()
+	if Input.is_action_just_pressed("ui_inventory"):
+		toggle_inventory()
 
 	update_animation(input_dir)
 	move_and_slide()
@@ -189,15 +219,28 @@ func do_damage(damage: int, hit_position: Vector2 = Vector2.ZERO):
 
 func die():
 	print("Player died!")
+	if inventory_ui:
+		inventory_ui.close_inventory()
 	get_tree().change_scene_to_file("res://death_screen.tscn")
 	
 	# TODO: Handle respawn / game over
 
 # --- Inventory ---
-func open_inventory_menu() -> void:
-	print("Opening inventory menu...")
-	get_tree().paused = true
-	# TODO: Show inventory UI here
+func toggle_inventory() -> void:
+	print("Toggle inventory called")
+	if inventory_ui:
+		if inventory_ui.visible:
+			print("Closing inventory")
+			inventory_ui.close_inventory()
+		else:
+			print("Opening inventory")
+			inventory_ui.open_inventory(card_inventory)
+	else:
+		print("Inventory UI not found!")
+
+func _on_inventory_closed():
+	print("Inventory closed callback received")
+	# Add any cleanup code here if needed
 
 # --- Animation ---
 func update_animation(input_dir: float) -> void:
