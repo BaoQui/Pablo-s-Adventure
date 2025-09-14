@@ -38,6 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://c6nw2xnyq4jq3" path="res://Individual Sprite/Run/Warrior_Run_6.png" id="28_ygbnx"]
 [ext_resource type="Texture2D" uid="uid://nkawfcwdw7s0" path="res://Individual Sprite/Run/Warrior_Run_7.png" id="29_v2t6f"]
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
+[ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Script" uid="uid://cl3d70rt0yylt" path="res://parallax_background.gd" id="42_bfour"]
@@ -200,20 +201,6 @@ size = Vector2(15.3849, 419.81)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hs0m"]
 
-[sub_resource type="GDScript" id="GDScript_1xqrm"]
-script/source = "extends Control
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-"
-
 [node name="Node2D" type="Node2D"]
 position = Vector2(159, 94)
 scale = Vector2(2.47984, 2.54137)
@@ -293,7 +280,7 @@ offset_top = -34.627
 offset_right = -59.6813
 offset_bottom = -34.627
 scale = Vector2(0.31, 0.31)
-script = SubResource("GDScript_1xqrm")
+script = ExtResource("33_hiqhm")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 script = ExtResource("41_ny14h")
