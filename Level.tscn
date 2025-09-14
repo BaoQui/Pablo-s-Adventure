@@ -620,7 +620,7 @@ position = Vector2(159, 94)
 scale = Vector2(2.47984, 2.54137)
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["Player"]]
-position = Vector2(-44.761, 28.7247)
+position = Vector2(-18.5496, 29.9051)
 scale = Vector2(0.357132, 0.372261)
 script = ExtResource("1_4flbx")
 move_speed = 200.0
@@ -654,7 +654,7 @@ shape = SubResource("CapsuleShape2D_2hs0m")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 modulate = Color(0.895935, 0, 0.317969, 1)
-position = Vector2(135.497, -41.224)
+position = Vector2(65.4901, -35.9388)
 scale = Vector2(1, 0.986558)
 zoom = Vector2(1.5, 1.5)
 limit_top = 0
@@ -703,6 +703,7 @@ scale = Vector2(0.31, 0.31)
 script = ExtResource("33_hiqhm")
 
 [node name="Ground Enemy" type="CharacterBody2D" parent="." groups=["Enemy"]]
+position = Vector2(19.3561, -3.14791)
 script = ExtResource("41_ny14h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground Enemy"]
