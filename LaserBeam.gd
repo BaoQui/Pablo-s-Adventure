@@ -10,7 +10,10 @@ extends Area2D
 @export var beam_width: float = 140.0    # used when full_width = false
 @export var beam_height: float = 42.0
 
-# Collision layers (EnemyAttack=2, Player=1)
+# Boss to follow (so Y matches exactly)
+@export var owner_boss: Node2D
+
+# Collision layers (EnemyAttack=2, Player=1) — adjust to your project
 const LAYER_ENEMY_ATTACK := 1 << 2
 const MASK_PLAYER := 1 << 1
 
@@ -29,8 +32,9 @@ func _ready() -> void:
 	_size_shape()
 
 	# Connect overlap signal (physics decides if we hit)
-	if not body_entered.is_connected(_on_body_entered):
-		body_entered.connect(_on_body_entered)
+	var cb := Callable(self, "_on_body_entered")
+	if not body_entered.is_connected(cb):
+		body_entered.connect(cb)
 
 	# Arm after windup; then deactivate after active_time
 	var t1 := get_tree().create_timer(windup_time)
@@ -46,6 +50,13 @@ func _ready() -> void:
 			queue_free()
 		)
 	)
+
+func _process(_delta: float) -> void:
+	# Keep laser Y exactly equal to boss Y every frame (if we have a boss)
+	if owner_boss:
+		global_position.y = owner_boss.global_position.y
+		# If you want the beam to also lock X to the boss, uncomment:
+		# global_position.x = owner_boss.global_position.x
 
 func _get_or_make_shape() -> CollisionShape2D:
 	for c in get_children():
@@ -65,7 +76,6 @@ func _size_shape() -> void:
 	rect.size = Vector2(width, beam_height)
 	_shape.shape = rect
 	_shape.position = Vector2.ZERO
-	# No visuals; the collision box alone defines hits
 
 func _on_body_entered(body: Node) -> void:
 	# Physics says we overlapped; only apply during active window
@@ -74,4 +84,4 @@ func _on_body_entered(body: Node) -> void:
 	# Be strict: require Player group and take_damage method
 	if body.is_in_group("Player") and body.has_method("take_damage"):
 		body.call("take_damage", damage, global_position)
-		_did_damage = true   # comment this out if you want damage every overlap
+		_did_damage = true   # comment this out if you want damage on every overlap
