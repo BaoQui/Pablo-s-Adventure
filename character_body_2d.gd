@@ -31,6 +31,7 @@ enum Pattern { WANDER_X, PACE, STRAFE, BURST }
 # --- Health ---
 @export var health: int = 50
 
+
 @onready var pattern_timer: Timer = $PatternTimer
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -237,6 +238,9 @@ func take_damage(damage_amount: int, from_point: Vector2 = Vector2.INF) -> void:
 
 func die():
 	print("Ground enemy defeated!")
+	var player = get_tree().get_first_node_in_group("Player")
+	if player:
+		player.kill_count += 1
 	queue_free()
 
 # --- Hurt player on collision ---
