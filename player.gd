@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+@onready var health_label: Label = $"../CanvasLayer/health_label"
+
+
 # --- Movement settings ---
 @export var base_move_speed: float = 300.0
 @export var move_speed: float = 300.0
@@ -79,6 +82,8 @@ func _ready() -> void:
 
 	# Add to Player group
 	add_to_group("Player")
+	update_health_display()
+
 
 func _physics_process(delta: float) -> void:
 	# --- timers ---
@@ -177,6 +182,7 @@ func do_damage(damage: int, hit_position: Vector2 = Vector2.ZERO):
 	print("Player has taken ", damage, " damage")
 	duelist_hit_streak = 0
 	duelist_speed_multiplier = 1.0
+	update_health_display()
 	if current_health <= 0:
 		die()
 
@@ -269,3 +275,7 @@ func shoot_projectile() -> void:
 	projectile.max_distance = projectile_distance
 	projectile.speed = projectile_speed
 	projectile.damage = projectile_damage
+	
+func update_health_display() -> void:
+	if health_label:
+		health_label.text = "HP: %d / %d" % [current_health, max_health]
