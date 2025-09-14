@@ -1,64 +1,53 @@
 extends Area2D
+# Physics-only laser: damages on actual overlap of CollisionShape2D
 
 @export var damage: int = 10
-@export var windup_time: float = 0.35
-@export var active_time: float = 1.0
+@export var windup_time: float = 0.25   # time before it becomes dangerous
+@export var active_time: float = 1.0    # time it can hurt
+
+# Beam dimensions
+@export var full_width: bool = false     # true = spans whole screen horizontally
+@export var beam_width: float = 140.0    # used when full_width = false
 @export var beam_height: float = 42.0
-@export var color_warn: Color = Color(1, 0.2, 0.2, 0.35)
-@export var color_active: Color = Color(1, 0.05, 0.05, 0.9)
 
-const LAYER_ENEMY_ATTACK := 1 << 2   # layer 2
-const MASK_PLAYER := 1 << 1          # mask 1
+# Collision layers (EnemyAttack=2, Player=1)
+const LAYER_ENEMY_ATTACK := 1 << 2
+const MASK_PLAYER := 1 << 1
 
-var owner_boss: Node = null
-var shape_node: CollisionShape2D
-var poly: Polygon2D
+var _shape: CollisionShape2D
+var _active: bool = false
+var _did_damage: bool = false  # set true to damage only once per beam
 
 func _ready() -> void:
+	# Ensure proper layer/mask for physics overlap with the Player
 	collision_layer = LAYER_ENEMY_ATTACK
 	collision_mask  = MASK_PLAYER
-	z_index = 1000
+	monitoring = false  # off during wind-up
 
-	# ensure children
-	shape_node = _ensure_shape()
-	poly = _ensure_poly()
+	# Ensure there's a CollisionShape2D and size it
+	_shape = _get_or_make_shape()
+	_size_shape()
 
-	# width from walls or viewport
-	var w := _beam_width()
-	var hw := w * 0.5
-	var hh := beam_height * 0.5
+	# Connect overlap signal (physics decides if we hit)
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
 
-	# visual rect centered at (0,0)
-	poly.polygon = PackedVector2Array([
-		Vector2(-hw, -hh), Vector2(hw, -hh),
-		Vector2(hw,  hh),  Vector2(-hw, hh)
-	])
-	poly.color = color_warn
+	# Arm after windup; then deactivate after active_time
+	var t1 := get_tree().create_timer(windup_time)
+	t1.timeout.connect(func():
+		_active = true
+		# Use deferred to avoid toggling monitoring mid-physics step
+		set_deferred("monitoring", true)
 
-	# collision rect
-	var rect := RectangleShape2D.new()
-	rect.size = Vector2(w, beam_height)
-	shape_node.shape = rect
-	shape_node.position = Vector2.ZERO
-
-	# center horizontally; EyeBoss sets our Y before add_child
-	var vr := get_viewport().get_visible_rect()
-	global_position.x = vr.position.x + vr.size.x * 0.5
-
-	# arm after windup, then expire
-	monitoring = false
-	get_tree().create_timer(windup_time).timeout.connect(func():
-		monitoring = true
-		poly.color = color_active
-		get_tree().create_timer(active_time).timeout.connect(func():
+		var t2 := get_tree().create_timer(active_time)
+		t2.timeout.connect(func():
+			_active = false
+			set_deferred("monitoring", false)
 			queue_free()
 		)
 	)
 
-	if not body_entered.is_connected(_on_body_entered):
-		body_entered.connect(_on_body_entered)
-
-func _ensure_shape() -> CollisionShape2D:
+func _get_or_make_shape() -> CollisionShape2D:
 	for c in get_children():
 		if c is CollisionShape2D:
 			return c
@@ -66,24 +55,23 @@ func _ensure_shape() -> CollisionShape2D:
 	add_child(cs)
 	return cs
 
-func _ensure_poly() -> Polygon2D:
-	for c in get_children():
-		if c is Polygon2D:
-			return c
-	var p := Polygon2D.new()
-	add_child(p)
-	return p
-
-func _beam_width() -> float:
-	var root := get_tree().current_scene
-	if root != null:
-		var left := root.find_child("Left_Wall", true, false)
-		var right := root.find_child("Right_Wall", true, false)
-		if left is Node2D and right is Node2D:
-			return absf((right as Node2D).global_position.x - (left as Node2D).global_position.x)
-	var vr := get_viewport().get_visible_rect()
-	return vr.size.x
+func _size_shape() -> void:
+	var width := beam_width
+	if full_width:
+		var vr := get_viewport().get_visible_rect()
+		width = vr.size.x
+	# Rectangle centered on the Area2D origin
+	var rect := RectangleShape2D.new()
+	rect.size = Vector2(width, beam_height)
+	_shape.shape = rect
+	_shape.position = Vector2.ZERO
+	# No visuals; the collision box alone defines hits
 
 func _on_body_entered(body: Node) -> void:
-	if body != null and body.is_in_group("Player") and body.has_method("take_damage"):
+	# Physics says we overlapped; only apply during active window
+	if not _active or _did_damage:
+		return
+	# Be strict: require Player group and take_damage method
+	if body.is_in_group("Player") and body.has_method("take_damage"):
 		body.call("take_damage", damage, global_position)
+		_did_damage = true   # comment this out if you want damage every overlap
