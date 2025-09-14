@@ -1,4 +1,3 @@
-# InventoryUI.gd
 extends Control
 class_name InventoryUI
 
@@ -9,7 +8,7 @@ class_name InventoryUI
 @onready var close_button: Button = $VBoxContainer/CloseButton
 
 var card_inventory: CardInventory
-var card_button_scene: PackedScene = preload("res://CardButton.tscn")  # You'll need to create this
+var card_button_scene: PackedScene = preload("res://CardButton.tscn")
 var selected_card: Card = null
 
 func _ready():
@@ -70,26 +69,23 @@ func _refresh_hand():
 		hand_grid.add_child(empty_button)
 
 func _create_card_button(card: Card, is_in_hand: bool) -> Button:
-	var button = Button.new()
-	button.custom_minimum_size = Vector2(80, 120)
+	# Instantiate your custom CardButton scene
+	var button = card_button_scene.instantiate() as Button
 	button.text = card.card_name
-	
-	# Color code by suit
+	button.custom_minimum_size = Vector2(80, 120)
 	button.modulate = card.get_card_color()
-	
+
 	# Connect signals
 	button.pressed.connect(_on_card_button_pressed.bind(card, is_in_hand))
 	button.mouse_entered.connect(_on_card_hover.bind(card))
 	button.mouse_exited.connect(_on_card_unhover)
-	
+
 	return button
 
 func _on_card_button_pressed(card: Card, is_in_hand: bool):
 	if is_in_hand:
-		# Remove from hand
 		card_inventory.remove_card_from_hand(card)
 	else:
-		# Add to hand (if space available)
 		card_inventory.add_card_to_hand(card)
 
 func _on_card_hover(card: Card):
