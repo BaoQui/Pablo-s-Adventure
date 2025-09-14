@@ -57,11 +57,20 @@ func create_inventory_slot(is_hand_slot: bool, slot_index: int) -> InventorySlot
 
 func open_inventory(inventory: CardInventory):
 	print("InventoryUI.open_inventory called")
+	if not inventory:
+		print("ERROR: No inventory passed to open_inventory!")
+		return
+		
 	card_inventory = inventory
 	refresh_display()
 	show()
 	get_tree().paused = true
-	print("Inventory opened and visible: ", visible)
+	
+	# Force the control to be visible and on top
+	z_index = 100
+	move_to_front()
+	
+	print("Inventory opened - visible: ", visible, " modulate: ", modulate)
 
 func close_inventory():
 	print("Closing inventory...")
@@ -98,14 +107,16 @@ func _input(event):
 	if not visible:
 		return
 	
-	# Handle I key to close inventory
+	# Handle ui_inventory action to close inventory
+	if Input.is_action_just_pressed("ui_inventory"):
+		print("ui_inventory pressed - closing inventory")
+		close_inventory()
+		get_viewport().set_input_as_handled()
+		return
+	
+	# Handle other keys to close inventory
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_I:
-			print("I key pressed - closing inventory")
-			close_inventory()
-			get_viewport().set_input_as_handled()  # Prevent other handlers
-			return
-		elif event.keycode == KEY_ESCAPE:
+		if event.keycode == KEY_ESCAPE:
 			print("ESC key pressed - closing inventory")
 			close_inventory()
 			get_viewport().set_input_as_handled()
@@ -224,3 +235,4 @@ func move_item(source_slot: InventorySlot, target_slot: InventorySlot) -> bool:
 
 func _on_close_button_pressed():
 	close_inventory()
+	
