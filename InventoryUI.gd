@@ -1,6 +1,6 @@
 # InventoryUI.gd
 extends Control
-
+class_name InventoryUI
 signal inventory_closed
 
 # Node references

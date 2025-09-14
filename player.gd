@@ -39,7 +39,7 @@ extends CharacterBody2D
 @export var base_money_multiplier: float = 1.0
 @export var money_multiplier: float = 1.0
 
-@onready var inventory_ui: Control = $InventoryUI
+@onready var inventory_ui: CanvasLayer = $InventoryUI
 
 # --- Node references ---
 @onready var punch_hitbox: Area2D = $PunchHitbox
