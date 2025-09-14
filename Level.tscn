@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=4 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=57 format=4 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_8gr2b"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://c1h5hxuv6aq7x" path="res://Individual Sprite/idle/Warrior_Idle_1.png" id="2_efrwb"]
 [ext_resource type="Texture2D" uid="uid://bucp1eywy5d01" path="res://Individual Sprite/idle/Warrior_Idle_2.png" id="3_hiqhm"]
 [ext_resource type="Texture2D" uid="uid://e8utffg0cvvx" path="res://Individual Sprite/Dash/Warrior_Dash_2.png" id="3_ny14h"]
-[ext_resource type="Script" uid="uid://mom5b183pa1p" path="res://dummy.gd" id="3_sweqy"]
 [ext_resource type="Texture2D" uid="uid://2fq7gn75diu2" path="res://Individual Sprite/Dash/Warrior_Dash_3.png" id="4_ibah8"]
 [ext_resource type="Texture2D" uid="uid://bagafgx07gep6" path="res://Individual Sprite/idle/Warrior_Idle_3.png" id="4_tkwlq"]
 [ext_resource type="Texture2D" uid="uid://bowgwmbjmuxec" path="res://Individual Sprite/Dash/Warrior_Dash_4.png" id="5_3iwfv"]
@@ -40,7 +39,6 @@
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
-[ext_resource type="Texture2D" uid="uid://d0g84o2a72qq3" path="res://idle.png" id="39_vl8ci"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Texture2D" uid="uid://cdij5xtw5bb1q" path="res://sr5z8f16caa261aws3(1).png" id="43_ieltc"]
 [ext_resource type="AudioStream" uid="uid://da5lk77yfhh4e" path="res://Trippy Trip Trop [4hD137dq0xg].mp3" id="47_8gr2b"]
@@ -667,25 +665,6 @@ shape = SubResource("RectangleShape2D_331ug")
 [node name="Right_Wall" type="CollisionShape2D" parent="Floor"]
 position = Vector2(1709.01, -148.168)
 shape = SubResource("RectangleShape2D_331ug")
-
-[node name="Flying Enemy" type="CharacterBody2D" parent="."]
-position = Vector2(55.2455, 26.3637)
-scale = Vector2(0.901565, 0.901565)
-script = ExtResource("3_sweqy")
-
-[node name="Sprite2D" type="Sprite2D" parent="Flying Enemy"]
-position = Vector2(7.15647, -41.4628)
-scale = Vector2(0.698875, 0.715953)
-texture = ExtResource("39_vl8ci")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Flying Enemy"]
-position = Vector2(6.26192, -41.4628)
-shape = SubResource("RectangleShape2D_2hs0m")
-
-[node name="PatternTimer" type="Timer" parent="Flying Enemy"]
-wait_time = 0.85
-one_shot = true
-autostart = true
 
 [node name="PauseMenu" parent="." instance=ExtResource("37_b88wv")]
 process_mode = 3
