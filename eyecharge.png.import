@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bngq85j8udssc"
-path="res://.godot/imported/sr5z6dc0e5c7ccaws3.png-90e482c9f960d0dcaea1d7fffea48708.ctex"
+uid="uid://tcbkoko12qro"
+path="res://.godot/imported/eyecharge.png-fc1f668842094cecbdeea3ba7ff475d8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sr5z6dc0e5c7ccaws3.png"
-dest_files=["res://.godot/imported/sr5z6dc0e5c7ccaws3.png-90e482c9f960d0dcaea1d7fffea48708.ctex"]
+source_file="res://eyecharge.png"
+dest_files=["res://.godot/imported/eyecharge.png-fc1f668842094cecbdeea3ba7ff475d8.ctex"]
 
 [params]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=4 uid="uid://ck6owtu4skrkl"]
+[gd_scene load_steps=65 format=4 uid="uid://ck6owtu4skrkl"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_d8gnr"]
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_ytr4e"]
@@ -46,6 +46,7 @@
 [ext_resource type="Texture2D" uid="uid://dquojr2rhoyqq" path="res://Assets/5. Mine Tileset - Starter Pack 16p/1_Mine_Tileset_1_16.png" id="44_f7eu1"]
 [ext_resource type="Texture2D" uid="uid://dfnh46u1rmhe6" path="res://Assets/16-bit-spike-Sheet.png" id="45_j286a"]
 [ext_resource type="Script" uid="uid://dgkncl805llb8" path="res://spike.gd" id="46_fi16w"]
+[ext_resource type="AudioStream" uid="uid://bebtytdf818kg" path="res://Uplifting Platformer Music for 8-bit Games  Dream Course.mp3" id="47_vho2s"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gme1u"]
 animations = [{
@@ -625,6 +626,10 @@ script = ExtResource("46_fi16w")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D7"]
 position = Vector2(60, 11)
 shape = SubResource("RectangleShape2D_16k7p")
+
+[node name="UpliftingPlatformerMusicFor8-bitGamesDreamCourse" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("47_vho2s")
+autoplay = true
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
