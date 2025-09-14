@@ -82,7 +82,7 @@ func refresh_display():
 		else:
 			inventory_slots[i].set_item(null)
 
-func _on_slot_clicked(slot: InventorySlot):
+func _on_slot_clicked(_slot: InventorySlot):
 	# Handle slot clicking if needed
 	pass
 
@@ -90,7 +90,7 @@ func _on_drag_started(slot: InventorySlot):
 	dragged_item = slot
 	create_drag_preview(slot)
 
-func _on_drag_ended(slot: InventorySlot):
+func _on_drag_ended(_slot: InventorySlot):
 	if drag_preview:
 		drag_preview.queue_free()
 		drag_preview = null
@@ -185,3 +185,7 @@ func move_item(source_slot: InventorySlot, target_slot: InventorySlot) -> bool:
 	
 	refresh_display()
 	return true
+
+
+func _on_close_button_pressed() -> void:
+	pass # Replace with function body.
