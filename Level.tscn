@@ -703,6 +703,7 @@ tile_map_data = PackedByteArray("AADw/woAAQABAAAAAADx/woAAQABAAAAAADy/woAAQABAAA
 tile_set = SubResource("TileSet_fddr8")
 
 [node name="BouncingEnemy" type="CharacterBody2D" parent="."]
+position = Vector2(0, 2.75442)
 script = ExtResource("49_fddr8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BouncingEnemy"]
@@ -785,7 +786,7 @@ one_shot = true
 autostart = true
 
 [node name="Sprite2D" type="Sprite2D" parent="BouncingEnemy2"]
-position = Vector2(57.1096, -13.8719)
+position = Vector2(55.0933, -13.4784)
 scale = Vector2(0.708683, 0.708291)
 texture = ExtResource("50_oybyf")
 
@@ -830,12 +831,12 @@ position = Vector2(109.674, -13.5537)
 script = ExtResource("41_ny14h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground Enemy2"]
-position = Vector2(5.64552, 21.2484)
+position = Vector2(-3.61879, 27.7193)
 scale = Vector2(0.708683, 0.708291)
 texture = ExtResource("43_ieltc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground Enemy2"]
-position = Vector2(4.83902, 21.2484)
+position = Vector2(-4.82854, 28.1128)
 shape = SubResource("RectangleShape2D_2hs0m")
 
 [node name="PatternTimer" type="Timer" parent="Ground Enemy2"]
@@ -844,7 +845,7 @@ one_shot = true
 autostart = true
 
 [node name="Ground Enemy3" type="CharacterBody2D" parent="."]
-position = Vector2(238.038, -8.60088)
+position = Vector2(179.85, -7.47628)
 script = ExtResource("41_ny14h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground Enemy3"]
@@ -862,11 +863,11 @@ one_shot = true
 autostart = true
 
 [node name="Ground Enemy4" type="CharacterBody2D" parent="."]
-position = Vector2(474.055, -10.8483)
+position = Vector2(478.257, -22.8223)
 script = ExtResource("41_ny14h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground Enemy4"]
-position = Vector2(5.64552, 21.2484)
+position = Vector2(6.04877, 20.8549)
 scale = Vector2(0.708683, 0.708291)
 texture = ExtResource("43_ieltc")
 
@@ -880,7 +881,7 @@ one_shot = true
 autostart = true
 
 [node name="Ground Enemy5" type="CharacterBody2D" parent="."]
-position = Vector2(398.422, -2.09563)
+position = Vector2(400.429, 8.65675)
 script = ExtResource("41_ny14h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground Enemy5"]
@@ -898,7 +899,7 @@ one_shot = true
 autostart = true
 
 [node name="Ground Enemy6" type="CharacterBody2D" parent="."]
-position = Vector2(362.339, -17.015)
+position = Vector2(484.709, 8.26326)
 script = ExtResource("41_ny14h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground Enemy6"]

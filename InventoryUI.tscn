@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://cxwy28o2fnsrx"]
 
-[ext_resource type="Script" uid="uid://cy2rny6f0pldg" path="res://inventory_ui.gd" id="1_dsn3v"]
+[ext_resource type="Script" uid="uid://cy2rny6f0pldg" path="res://InventoryUI.gd" id="1_dsn3v"]
 
-[node name="Control" type="Control"]
+[node name="InventoryUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,48 +11,75 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dsn3v")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -107.0
-grow_horizontal = 0
+grow_horizontal = 2
 grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
 
-[node name="Handsection" type="VBoxContainer" parent="VBoxContainer"]
+[node name="MainContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Spacer" type="Control" parent="MainContainer"]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
-[node name="CurrentHand" type="Label" parent="VBoxContainer/Handsection"]
-layout_mode = 2
-text = "Current Hand"
-
-[node name="Handgrid" type="GridContainer" parent="VBoxContainer/Handsection"]
+[node name="HandPanel" type="VBoxContainer" parent="MainContainer"]
+custom_minimum_size = Vector2(250, 350)
 layout_mode = 2
 
-[node name="Inventorysection" type="VBoxContainer" parent="VBoxContainer"]
+[node name="HandLabel" type="Label" parent="MainContainer/HandPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Hand"
+horizontal_alignment = 1
+
+[node name="HandGrid" type="GridContainer" parent="MainContainer/HandPanel"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="InventoryPanel" type="VBoxContainer" parent="MainContainer"]
+custom_minimum_size = Vector2(250, 350)
 layout_mode = 2
 
-[node name="Inventory" type="Label" parent="VBoxContainer/Inventorysection"]
+[node name="InventoryLabel" type="Label" parent="MainContainer/InventoryPanel"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "Inventory"
+horizontal_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Inventorysection"]
+[node name="InventoryGrid" type="GridContainer" parent="MainContainer/InventoryPanel"]
 layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 2
 
-[node name="InventoryGrid" type="GridContainer" parent="VBoxContainer/Inventorysection/ScrollContainer"]
-layout_mode = 2
-
-[node name="Cardinfopanel" type="Panel" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="CardInfoLabel" type="RichTextLabel" parent="VBoxContainer/Cardinfopanel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Closebutton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Close Button
-"
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -612.0
+offset_top = 20.0
+offset_right = -532.0
+offset_bottom = 60.0
+grow_horizontal = 0
+text = "Close (I)"
