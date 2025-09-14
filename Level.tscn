@@ -613,7 +613,7 @@ physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_608kq")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_608kq"]
-size = Vector2(7.58047, 7.86977)
+size = Vector2(3.76559, 7.86977)
 
 [node name="Node2D" type="Node2D"]
 position = Vector2(159, 94)
@@ -750,7 +750,7 @@ position = Vector2(4.43577, 22.0354)
 shape = SubResource("CapsuleShape2D_1213o")
 
 [node name="Ground Enemy3" type="CharacterBody2D" parent="." groups=["Enemy"]]
-position = Vector2(323.408, -0.393487)
+position = Vector2(291.551, 0.393487)
 script = ExtResource("41_ny14h")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground Enemy3"]
@@ -861,15 +861,17 @@ texture = ExtResource("50_g4vxw")
 
 [node name="Goal" type="Area2D" parent="."]
 position = Vector2(529.47, 31.8726)
+scale = Vector2(3.665, 3.665)
 disable_mode = 2
 script = ExtResource("49_n4kpv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Goal"]
-position = Vector2(-1.31726e-05, -8.34465e-07)
+position = Vector2(-0.427887, -2.46938)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_608kq")
 
 [node name="Sprite2D" type="Sprite2D" parent="Goal" groups=["Player"]]
-position = Vector2(-0.806852, 0.786956)
+position = Vector2(-0.990348, -2.14728)
 scale = Vector2(0.36971, 0.28689)
 texture = ExtResource("50_608kq")
 
