@@ -17,13 +17,14 @@ enum Pattern { HOVER, SINE, BURST }
 # --- Optional roam bounds (set in Inspector). If size==0, tries to infer from named walls. ---
 @export var patrol_rect: Rect2
 
-# --- Steering / anti-stick ---
+# --- Wall awareness / steering (prevents picking moves into walls) ---
 @export var lookahead_dist: float = 18.0
-@export var wall_separation_push: float = 10.0
+@export var bounce_cooldown: float = 0.12
+@export var separation_push: float = 10.0 # tiny nudge off surfaces
 
-# --- REQUIRED: forced 2s downward after touching Ceiling ---
+# --- CEILING forced-down behavior ---
 @export var forced_down_speed: float = 240.0
-@export var forced_down_time: float = 2.0  # seconds
+@export var forced_down_time: float = 2.0 # seconds to fly straight down
 
 # --- Hit reaction (away from punch source) ---
 @export var knockback_speed: float = 520.0
@@ -40,9 +41,10 @@ var base_pos: Vector2
 var target_pos: Vector2
 var sine_t: float = 0.0
 
-# Knockback
+# Knockback / anti-stick
 var knockback_timer: float = 0.0
 var knockback_dir: Vector2 = Vector2.ZERO
+var wall_cooldown: float = 0.0
 
 # Forced descent state
 enum ForcedState { NONE, DOWN }
@@ -60,22 +62,22 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	knockback_timer -= delta
+	wall_cooldown = maxf(wall_cooldown - delta, 0.0)
 
-	# If we are in forced-down state, override everything for exactly forced_down_time
-	if forced_state == ForcedState.DOWN:
+	# --- Forced descent after hitting Ceiling ---
+	if forced_state != ForcedState.NONE:
 		forced_timer -= delta
 		var desired_v_forced: Vector2 = Vector2(0.0, forced_down_speed)
 		velocity.x = move_toward(velocity.x, desired_v_forced.x, acceleration * delta)
 		velocity.y = move_toward(velocity.y, desired_v_forced.y, acceleration * delta)
 		move_and_slide()
-		# Keep an eye out for sticking to floor/other surfaces (gentle nudge off)
-		_post_move_separation(delta)
+		_post_move_separation(delta) # Added from Prekene
 		if forced_timer <= 0.0:
 			forced_state = ForcedState.NONE
 			_restart_pattern_cycle()
 		return
 
-	# Normal desired velocity (patterns or knockback)
+	# --- Normal behavior ---
 	var desired_v: Vector2
 	if knockback_timer > 0.0:
 		desired_v = knockback_dir * knockback_speed
@@ -83,22 +85,13 @@ func _physics_process(delta: float) -> void:
 		desired_v = _pattern_velocity(delta)
 		desired_v = _steer_away_from_walls(desired_v)
 
-	# Accel / decel
 	velocity.x = move_toward(velocity.x, desired_v.x, acceleration * delta)
 	velocity.y = move_toward(velocity.y, desired_v.y, acceleration * delta)
 
-	# Move and then check collisions for Ceiling contact
 	move_and_slide()
-	_check_ceiling_contact_and_trigger(delta)
+	_handle_named_bounds(delta)
 
-	# Gentle separation from any surface we’re pressed against
-	_post_move_separation(delta)
-
-func _check_ceiling_contact_and_trigger(delta: float) -> void:
-	# Scan all slide collisions THIS frame; if any collider is named "Ceiling",
-	# immediately enter forced downward for 2 seconds.
-	if forced_state == ForcedState.DOWN:
-		return
+func _handle_named_bounds(delta: float) -> void:
 	for i in range(get_slide_collision_count()):
 		var c := get_slide_collision(i)
 		if c == null:
@@ -106,16 +99,30 @@ func _check_ceiling_contact_and_trigger(delta: float) -> void:
 		var collider := c.get_collider()
 		if collider == null or not (collider is Node):
 			continue
-		if (collider as Node).name == "Ceiling":
-			# Enter forced downward state
+		var name_str: String = (collider as Node).name
+
+		if name_str == "Ceiling":
+			# Enter forced downward flight for forced_down_time, restart patterns after
 			forced_state = ForcedState.DOWN
 			forced_timer = forced_down_time
-			# Stop the pattern timer so it doesn't switch mid-descent
-			pattern_timer.stop()
-			# Immediate downward velocity and a tiny separation so we don't stick
-			velocity = Vector2(0.0, forced_down_speed)
-			global_position.y += wall_separation_push * delta
+			pattern_timer.stop() # pause pattern switching during forced state
+			global_position.y += separation_push * delta # small separation so we don't keep colliding
+			velocity = Vector2(0.0, forced_down_speed) # immediate downward response
 			return
+		elif name_str == "Floor":
+			global_position.y -= separation_push * delta
+			if velocity.y > -forced_down_speed:
+				velocity.y = -forced_down_speed
+		elif name_str == "Right_Wall":
+			global_position.x -= separation_push * delta
+			if velocity.x > 0.0:
+				velocity.x = -absf(velocity.x)
+		elif name_str == "Left_Wall":
+			global_position.x += separation_push * delta
+			if velocity.x < 0.0:
+				velocity.x = absf(velocity.x)
+	# Gentle separation from any surface we’re pressed against (from Prekene)
+	_post_move_separation(delta)
 
 func _post_move_separation(delta: float) -> void:
 	# Optional gentle separation from any surface we touched to avoid micro-sticking
@@ -125,7 +132,7 @@ func _post_move_separation(delta: float) -> void:
 			continue
 		var n: Vector2 = c.get_normal()
 		# Nudge away a little
-		global_position += n * (wall_separation_push * 0.5 * delta)
+		global_position += n * (separation_push * 0.5 * delta)
 
 func _on_pattern_timeout() -> void:
 	_pick_new_pattern()
@@ -142,24 +149,7 @@ func _pick_new_pattern() -> void:
 	if current_pattern == Pattern.HOVER:
 		target_pos = _pick_hover_target()
 
-# ---- Movement patterns ----
-func _pattern_velocity(delta: float) -> Vector2:
-	match current_pattern:
-		Pattern.HOVER:
-			if global_position.distance_to(target_pos) < 8.0:
-				target_pos = _pick_hover_target()
-			return (target_pos - global_position).normalized() * move_speed
-		Pattern.SINE:
-			sine_t += delta
-			var vx: float = move_speed * 0.7
-			var vy: float = sin(sine_t * TAU * sine_freq) * sine_amplitude
-			return Vector2(vx, vy)
-		Pattern.BURST:
-			return Vector2(burst_speed, 0.0)
-	return Vector2.ZERO
-
 func _pick_hover_target() -> Vector2:
-	# Choose a random reachable target; avoid picking directly into a wall
 	var attempt_count: int = 0
 	while attempt_count < 6:
 		var candidate: Vector2
@@ -179,10 +169,27 @@ func _pick_hover_target() -> Vector2:
 		if not test_move(global_transform, dir * lookahead_dist):
 			return candidate
 		attempt_count += 1
-	# Fallback
+	# fallback
 	return global_position + Vector2(wander_range, 0.0)
 
+func _pattern_velocity(delta: float) -> Vector2:
+	match current_pattern:
+		Pattern.HOVER:
+			if global_position.distance_to(target_pos) < 8.0:
+				target_pos = _pick_hover_target()
+			return (target_pos - global_position).normalized() * move_speed
+		Pattern.SINE:
+			sine_t += delta
+			var vx: float = move_speed * 0.7
+			var vy: float = sin(sine_t * TAU * sine_freq) * sine_amplitude
+			return Vector2(vx, vy)
+		Pattern.BURST:
+			return Vector2(burst_speed, 0.0)
+	return Vector2.ZERO
+
 func _steer_away_from_walls(desired_v: Vector2) -> Vector2:
+	if wall_cooldown > 0.0:
+		return desired_v
 	var out_v: Vector2 = desired_v
 	# Probe X
 	if absf(out_v.x) > 0.01:

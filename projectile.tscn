@@ -1,10 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://b3dlo8jdhs4sj"]
+[gd_scene load_steps=4 format=3 uid="uid://c80q0mof47f1a"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_akgne"]
+[ext_resource type="Texture2D" uid="uid://dafxx5ht5atxd" path="res://8BitDeckAssets.png" id="1_a85iw"]
+[ext_resource type="Script" uid="uid://d0jqubpdvshfs" path="res://projectile.gd" id="1_qxf0c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qxf0c"]
+size = Vector2(16, 12)
 
 [node name="Node2D" type="Area2D"]
+scale = Vector2(0.341126, 0.356968)
+collision_layer = 7
+collision_mask = 3
+script = ExtResource("1_qxf0c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_akgne")
+light_mask = 7
+visibility_layer = 3
+shape = SubResource("RectangleShape2D_qxf0c")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.19209e-07, -2.84217e-14)
+rotation = 1.5708
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("1_a85iw")
+region_enabled = true
+region_rect = Rect2(0.552568, 0.896644, 33.6011, 45.3808)

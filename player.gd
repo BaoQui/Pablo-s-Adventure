@@ -19,7 +19,7 @@ extends CharacterBody2D
 @export var punch_damage: int = 10
 @export var punch_cooldown: float = 0.3
 @export var punch_duration: float = 0.25 # seconds for the punch animation
-@export var air_punch_push: float = 50.0  # tiny forward push while mid-air punch
+@export var air_punch_push: float = 50.0 # tiny forward push while mid-air punch
 
 # --- Projectile settings ---
 @export var projectile_scene: PackedScene
@@ -62,8 +62,8 @@ func _physics_process(delta: float) -> void:
 	projectile_timer -= delta
 	dash_timer -= delta
 	dash_cooldown_timer -= delta
-
-	var input_dir: float = Input.get_axis("ui_left", "ui_right")
+	
+	var input_dir := Input.get_axis("ui_left", "ui_right")
 
 	# Freeze movement during air punch (except a tiny nudge)
 	if freeze_velocity:
@@ -131,7 +131,6 @@ func _physics_process(delta: float) -> void:
 func update_animation(input_dir: float) -> void:
 	if is_punching or is_dashing:
 		return
-
 	if not is_on_floor():
 		if velocity.y < 0.0:
 			play_animation("jump")
