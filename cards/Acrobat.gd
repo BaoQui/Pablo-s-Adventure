@@ -1,9 +1,11 @@
 extends Resource
 class_name Acrobat
 
-#Add Athelete 
+# Acrobat card: adds one dash
 func apply(player: Node) -> void:
-	player.dash_count += 1 
-#Remove Athelete
+	if player.has("dash_count"):
+		player.dash_count += 1
+
 func remove(player: Node) -> void:
-	player.dash_count -= 1
+	if player.has("dash_count"):
+		player.dash_count -= 1

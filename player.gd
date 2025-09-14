@@ -19,6 +19,7 @@ extends CharacterBody2D
 @export var dash_speed: float = 400.0
 @export var dash_duration: float = 0.15
 @export var dash_cooldown: float = 0.5
+@export var dash_count: int = 1
 
 # --- Punch settings ---
 @export var base_punch_damage: int = 10
@@ -48,6 +49,7 @@ extends CharacterBody2D
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
 # --- State variables ---
+var active_cards: Array = []
 var punch_timer: float = 0.0
 var projectile_timer: float = 0.0
 var coyote_timer: float = 0.0
@@ -172,6 +174,15 @@ func do_damage(damage: int, _hit_position: Vector2 = Vector2.ZERO):
 	update_health_display()
 	if current_health <= 0:
 		die()
+
+
+# Apply a card instance to the 
+func apply_card_effect(card_instance):
+	if card_instance.has_method("apply"):
+		card_instance.apply(self)
+		active_cards.append(card_instance)
+		_update_card_effects()
+
 
 func die():
 	print("Player died!")

@@ -1,13 +1,8 @@
 extends Resource
-class_name Jester
 
-#Add Jester
+# Jester card: Increases punch damage by 10
 func apply(player: Node) -> void:
-	player.dmg_flat_add += 10 
-	
+	player.punch_damage += 10
+
 func remove(player: Node) -> void:
-	player.dmg_flat_add -= 10
-
-
-#How To Add A Joker
-#set_card(1, Jester.new())
+	player.punch_damage -= 10

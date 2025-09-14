@@ -1,9 +1,9 @@
 extends Resource
-class_name Athlete
+class_name Jester
 
-#Add Athelete 
+# Jester card: Increases punch damage by 10
 func apply(player: Node) -> void:
-	player.move_speed *=  1.5 
-#Remove Athelete
+	player.punch_damage += 10
+
 func remove(player: Node) -> void:
-	player.move_speed /= 1.5
+	player.punch_damage -= 10

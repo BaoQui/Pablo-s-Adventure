@@ -1,12 +1,11 @@
 extends Resource
 class_name Banker
 
-#Add Banker 
+# Banker card: Increases money multiplier by 1.5x
 func apply(player: Node) -> void:
-	player.chip_gain *=  1.5 
-#Remove Banker
-func remove(player: Node) -> void:
-	player.chip_gain /= 1.5
+	if "money_multiplier" in player:
+		player.money_multiplier *= 1.5
 
-#How To Add A Banker
-#set_card(1, Banker.new())
+func remove(player: Node) -> void:
+	if "money_multiplier" in player:
+		player.money_multiplier /= 1.5
