@@ -269,6 +269,7 @@ func _on_animation_finished() -> void:
 func _on_punch_hitbox_body_entered(body: Node) -> void:
 	if body.has_method("take_damage"):
 		body.take_damage(punch_damage, $PunchHitbox.global_position)
+
 		
 		# Check if enemy died to trigger card drop
 		if body.has_method("is_dead") and body.is_dead():
