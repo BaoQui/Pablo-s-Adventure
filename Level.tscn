@@ -652,14 +652,6 @@ position = Vector2(-0.607123, -5.50447)
 scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
-modulate = Color(0.895935, 0, 0.317969, 1)
-position = Vector2(65.4901, -35.9388)
-scale = Vector2(1, 0.986558)
-zoom = Vector2(1.5, 1.5)
-limit_top = 0
-limit_bottom = 0
-
 [node name="InventoryUI" parent="Player" instance=ExtResource("38_ndm73")]
 offset_left = 248.411
 offset_top = -81.3909
@@ -669,6 +661,12 @@ scale = Vector2(0.37655, 0.365574)
 
 [node name="CardInventory" type="Node" parent="Player"]
 script = ExtResource("39_g4vxw")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
+limit_top = 0
+limit_bottom = 0
+position_smoothing_enabled = true
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(-1.61301, 37.7749)
