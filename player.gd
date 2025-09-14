@@ -202,8 +202,8 @@ func _update_card_effects():
 	# Duelist effect is handled in combat
 	print("Updated stats - Health: ", max_health, " Punch: ", punch_damage, " Money: ", money_multiplier)
 
-func take_damage(damage: int, hit_position: Vector2 = Vector2.ZERO):
-	current_health -= damage
+func take_damage(amount: int, hit_position: Vector2 = Vector2.ZERO):
+	current_health -= amount
 	duelist_hit_streak = 0  # Reset duelist streak when taking damage
 	duelist_speed_multiplier = 1.0
 	

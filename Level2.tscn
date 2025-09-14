@@ -42,8 +42,8 @@
 [ext_resource type="Texture2D" uid="uid://gxmq6j52td8a" path="res://Assets/game_background_2/layers/clouds_3.png" id="41_apgbi"]
 [ext_resource type="Texture2D" uid="uid://ca6k3s2vd30f4" path="res://Assets/5. Mine Tileset - Starter Pack 16p/2_Mine_Tileset_1_Background_16.png" id="41_gme1u"]
 [ext_resource type="Texture2D" uid="uid://o4rt3nh6q77h" path="res://Assets/5. Mine Tileset - Starter Pack 16p/0_Template_Tileset_16.png" id="42_ae8kp"]
-[ext_resource type="Script" path="res://EyeBoss.gd" id="43_j286a"]
-[ext_resource type="PackedScene" path="res://LaserBeam.tscn" id="44_fi16w"]
+[ext_resource type="Script" uid="uid://dh0yvhsmha0nj" path="res://EyeBoss.gd" id="43_j286a"]
+[ext_resource type="PackedScene" uid="uid://b2uigbb0t52or" path="res://LaserBeam.tscn" id="44_fi16w"]
 [ext_resource type="Texture2D" uid="uid://bngq85j8udssc" path="res://sr5z6dc0e5c7ccaws3.png" id="45_vho2s"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8615v"]
@@ -1006,6 +1006,9 @@ gravity = 1300.0
 projectile_scene = ExtResource("2_ytr4e")
 projectile_distance = 200.0
 projectile_speed = 300.0
+base_health = 1.0
+max_health = 1.0
+current_health = 1.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(6.77475, -4.28557)
