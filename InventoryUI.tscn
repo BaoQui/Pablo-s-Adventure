@@ -2,37 +2,35 @@
 
 [ext_resource type="Script" uid="uid://cy2rny6f0pldg" path="res://InventoryUI.gd" id="1_dsn3v"]
 
-[node name="CanvasLayer" type="CanvasLayer"]
-
-[node name="InventoryUI" type="Control" parent="."]
+[node name="InventoryUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 136.0
-offset_top = 83.0
-offset_right = 136.0
-offset_bottom = 83.0
+offset_left = 55.0
+offset_top = 71.0
+offset_right = 55.0
+offset_bottom = 71.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.505177, 0.505177)
 script = ExtResource("1_dsn3v")
 
-[node name="Background" type="ColorRect" parent="InventoryUI"]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -453.306
-offset_top = -271.192
-offset_right = -453.306
-offset_bottom = -271.192
+offset_left = -306.823
+offset_top = -148.463
+offset_right = -306.823
+offset_bottom = -148.463
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(2.72972, 3.0594)
+scale = Vector2(1.9172, 2.01301)
 color = Color(0, 0, 0, 0.7)
 
-[node name="MainContainer" type="HBoxContainer" parent="InventoryUI"]
+[node name="MainContainer" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(600, 400)
 layout_mode = 1
 anchors_preset = 8
@@ -48,43 +46,43 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Spacer" type="Control" parent="InventoryUI/MainContainer"]
+[node name="Spacer" type="Control" parent="MainContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
-[node name="HandPanel" type="VBoxContainer" parent="InventoryUI/MainContainer"]
+[node name="HandPanel" type="VBoxContainer" parent="MainContainer"]
 custom_minimum_size = Vector2(250, 350)
 layout_mode = 2
 
-[node name="HandLabel" type="Label" parent="InventoryUI/MainContainer/HandPanel"]
+[node name="HandLabel" type="Label" parent="MainContainer/HandPanel"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Hand"
 horizontal_alignment = 1
 
-[node name="HandGrid" type="GridContainer" parent="InventoryUI/MainContainer/HandPanel"]
+[node name="HandGrid" type="GridContainer" parent="MainContainer/HandPanel"]
 layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 3
 
-[node name="InventoryPanel" type="VBoxContainer" parent="InventoryUI/MainContainer"]
+[node name="InventoryPanel" type="VBoxContainer" parent="MainContainer"]
 custom_minimum_size = Vector2(250, 350)
 layout_mode = 2
 
-[node name="InventoryLabel" type="Label" parent="InventoryUI/MainContainer/InventoryPanel"]
+[node name="InventoryLabel" type="Label" parent="MainContainer/InventoryPanel"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Inventory"
 horizontal_alignment = 1
 
-[node name="InventoryGrid" type="GridContainer" parent="InventoryUI/MainContainer/InventoryPanel"]
+[node name="InventoryGrid" type="GridContainer" parent="MainContainer/InventoryPanel"]
 layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="CloseButton" type="Button" parent="InventoryUI"]
+[node name="CloseButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -96,4 +94,4 @@ offset_bottom = -9.48761
 grow_horizontal = 0
 text = "Close (I)"
 
-[connection signal="pressed" from="InventoryUI/CloseButton" to="InventoryUI" method="_on_close_button_pressed"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]

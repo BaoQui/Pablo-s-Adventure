@@ -654,8 +654,11 @@ shape = SubResource("CapsuleShape2D_2hs0m")
 
 [node name="InventoryUI" parent="Player" instance=ExtResource("38_ndm73")]
 visible = false
+offset_left = 248.411
+offset_top = -81.3909
+offset_right = 248.411
+offset_bottom = -81.3909
 scale = Vector2(0.37655, 0.365574)
-transform = Transform2D(0.37655, 0, 0, 0.365574, 0, 0)
 
 [node name="CardInventory" type="Node" parent="Player"]
 script = ExtResource("39_g4vxw")
