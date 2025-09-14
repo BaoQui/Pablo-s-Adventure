@@ -117,15 +117,10 @@ func take_damage(damage_amount: int, from_point: Vector2 = Vector2.INF) -> void:
 	print(name, " took ", damage_amount, " damage. Health is now: ", health)
 
 	if from_point != Vector2.INF:
-		# Knockback strengths (tweak as needed)
-		var knockback_strength_x: float = 400.0
-		var knockback_strength_y: float = 300.0
-
 		# If attacker is to the left of enemy → knock enemy right
 		if from_point.x > global_position.x:
 			velocity.x = knockback_strength_x
 		else:
-			# Attacker is to the right of enemy → knock enemy left
 			velocity.x = -knockback_strength_x
 
 		# Always knock upwards
@@ -148,9 +143,6 @@ func die():
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		body.do_damage(10, global_position)
-
-		var knockback_strength_x: float = 600.0
-		var knockback_strength_y: float = 300.0
 
 		if body.global_position.x > global_position.x:
 			body.velocity.x = -knockback_strength_x

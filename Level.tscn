@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=4 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=63 format=4 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_8gr2b"]
@@ -39,8 +39,6 @@
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
-[ext_resource type="PackedScene" uid="uid://cxwy28o2fnsrx" path="res://InventoryUI.tscn" id="38_ndm73"]
-[ext_resource type="Script" uid="uid://cdaovoc72rf4t" path="res://CardInventory.gd" id="39_g4vxw"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Texture2D" uid="uid://cdij5xtw5bb1q" path="res://sr5z8f16caa261aws3(1).png" id="43_ieltc"]
 [ext_resource type="AudioStream" uid="uid://da5lk77yfhh4e" path="res://Trippy Trip Trop [4hD137dq0xg].mp3" id="47_8gr2b"]
@@ -52,6 +50,7 @@
 [ext_resource type="Texture2D" uid="uid://bqd5ljc08ew7o" path="res://pixil-frame-0 (1).png" id="50_608kq"]
 [ext_resource type="Texture2D" uid="uid://gxmq6j52td8a" path="res://Assets/game_background_2/layers/clouds_3.png" id="50_g4vxw"]
 [ext_resource type="Texture2D" uid="uid://j0hw477eqgjd" path="res://pixil-frame-0.png" id="50_oybyf"]
+[ext_resource type="Script" uid="uid://70gjdrvcy632" path="res://cards.gd" id="51_ndm73"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xry5e"]
 animations = [{
@@ -629,9 +628,8 @@ deceleration = 6000.0
 jump_force = 400.0
 gravity = 800.0
 projectile_scene = ExtResource("2_8gr2b")
-projectile_distance = 200.0
-projectile_speed = 300.0
-inventory_ui_scene = ExtResource("38_ndm73")
+projectile_distance = 10000.0
+projectile_speed = 400.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(6.77475, -4.28557)
@@ -652,14 +650,6 @@ scale = Vector2(3.71964, 0.96015)
 position = Vector2(-0.607123, -5.50447)
 scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
-
-[node name="InventoryUI" parent="Player" instance=ExtResource("38_ndm73")]
-visible = false
-scale = Vector2(0.37655, 0.365574)
-transform = Transform2D(0.37655, 0, 0, 0.365574, 0, 0)
-
-[node name="CardInventory" type="Node" parent="Player"]
-script = ExtResource("39_g4vxw")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(1.5, 1.5)
@@ -879,12 +869,39 @@ offset_left = 2.0
 offset_top = 2.0
 offset_right = 42.0
 offset_bottom = 25.0
+scale = Vector2(1, 1.01898)
 
 [node name="goal_label" type="Label" parent="CanvasLayer"]
 offset_left = 153.0
 offset_top = 95.0
 offset_right = 193.0
 offset_bottom = 118.0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -162.107
+offset_top = -78.6977
+offset_right = -122.107
+offset_bottom = -38.6977
+
+[node name="Cards" type="CanvasLayer" parent="."]
+script = ExtResource("51_ndm73")
+
+[node name="Card1" type="TextureRect" parent="Cards"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="Card2" type="TextureRect" parent="Cards"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -81.0
+offset_right = -41.0
+offset_bottom = 40.0
+grow_horizontal = 0
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]
 [connection signal="body_entered" from="Ground Enemy/Area2D" to="Ground Enemy" method="_on_area_2d_body_entered"]
