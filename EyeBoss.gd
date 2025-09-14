@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+
 # ---------- Lanes (Y positions) ----------
 @export var top_y: float = 0.0
 @export var mid_y: float = 0.0
@@ -7,11 +8,11 @@ extends CharacterBody2D
 
 # Movement between lanes
 @export var move_speed: float = 180.0   # pixels/sec vertically
-@export var dwell_time: float = 4.0     # pause 4s at each lane before moving
+@export var dwell_time: float = 2    # pause at each lane
 
 # Laser
-@export var laser_scene: PackedScene     # assign LaserBeam.tscn in the boss instance
-@export var shoot_interval: float = 2.0  # seconds between shots
+@export var laser_scene: PackedScene     # assign LaserBeam.tscn on THIS Level2 instance
+@export var shoot_interval: float = 6 # seconds between shots
 
 # Health
 @export var health: int = 200
@@ -39,7 +40,7 @@ func _ready() -> void:
 	if bottom_y == 0.0:
 		bottom_y = mid_y + 40.0
 
-	_lane_list = PackedFloat32Array([top_y, mid_y, bottom_y, mid_y])
+	_lane_list = [top_y, mid_y, bottom_y, mid_y]
 	_lane_index = 0
 	_target_y = _lane_list[_lane_index]
 	_moving = true
@@ -51,12 +52,12 @@ func _ready() -> void:
 	_shoot_timer.wait_time = shoot_interval
 	_shoot_timer.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_shoot_timer)
-	_shoot_timer.timeout.connect(Callable(self, "_on_shoot_timeout"))
+	_shoot_timer.timeout.connect(_on_shoot_timeout)
 	_shoot_timer.start()
 
 	if laser_scene == null:
-		push_warning("[EyeBoss] laser_scene is NOT assigned on this boss instance.")
-	print("[EyeBoss] Ready. shoot_interval = ", shoot_interval, " dwell_time = ", dwell_time)
+		push_warning("[EyeBoss] laser_scene is NOT assigned on this Level2 instance.")
+	print("[EyeBoss] Ready. shoot_interval = ", shoot_interval)
 
 func _physics_process(delta: float) -> void:
 	# Float toward target lane
@@ -85,26 +86,26 @@ func _shoot_laser() -> void:
 		return
 
 	var beam := laser_scene.instantiate()
+	# We accept Area2D or Node2D; LaserBeam.tscn should be Area2D.
 	if not (beam is Node2D):
 		push_error("[EyeBoss] laser_scene root must be Node2D/Area2D.")
 		return
 
-	# Place beam at boss X/Y initially
+	# Center the beam on the boss's current X and Y
 	(beam as Node2D).global_position = Vector2(global_position.x, global_position.y)
 
-	# Add to current scene (fallback to root)
+	# Add to the current level scene (fallback to root)
 	var parent := get_tree().current_scene
 	if parent == null:
 		parent = get_tree().root
+		$AnimatedSprite2D.animation = "run"
 	parent.add_child(beam)
 
-	# Pass boss reference
-	if beam is Area2D:
-		(beam as Area2D).owner_boss = self
+	# Optional: if your LaserBeam has an 'owner_boss' property, set it:
+	if beam.has_method("set"):
+		beam.set("owner_boss", self)
 
-	print("[EyeBoss] Laser fired @ ", (beam as Node2D).global_position)
-
-
+	# Debug
 	print("[EyeBoss] Laser fired @ ", (beam as Node2D).global_position)
 
 # -------- Damage --------

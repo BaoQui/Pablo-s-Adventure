@@ -43,7 +43,7 @@
 [ext_resource type="Texture2D" uid="uid://ca6k3s2vd30f4" path="res://Assets/5. Mine Tileset - Starter Pack 16p/2_Mine_Tileset_1_Background_16.png" id="41_iuwhw"]
 [ext_resource type="Script" uid="uid://dh0yvhsmha0nj" path="res://EyeBoss.gd" id="42_ye5a2"]
 [ext_resource type="PackedScene" uid="uid://b2uigbb0t52or" path="res://LaserBeam.tscn" id="43_ltdll"]
-[ext_resource type="Texture2D" uid="uid://bngq85j8udssc" path="res://sr5z6dc0e5c7ccaws3.png" id="43_sxoc8"]
+[ext_resource type="Texture2D" uid="uid://bngq85j8udssc" path="res://eyebossidle.png" id="43_sxoc8"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8615v"]
 animations = [{

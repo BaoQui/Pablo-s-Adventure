@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bebtytdf818kg"
+path="res://.godot/imported/Uplifting Platformer Music for 8-bit Games  Dream Course.mp3-e6ed9425e063d4f84a285fca4eea6fc3.mp3str"
+
+[deps]
+
+source_file="res://Uplifting Platformer Music for 8-bit Games  Dream Course.mp3"
+dest_files=["res://.godot/imported/Uplifting Platformer Music for 8-bit Games  Dream Course.mp3-e6ed9425e063d4f84a285fca4eea6fc3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
