@@ -19,9 +19,12 @@ var dragged_item: InventorySlot = null
 var drag_preview: Control = null
 
 func _ready():
-	# Set up the UI
 	setup_ui()
 	hide()
+	print("InventoryUI ready and hidden")
+	
+	# Make sure we can receive input
+	set_process_input(true)
 
 func setup_ui():
 	# Create hand slots (3 slots)
@@ -58,6 +61,7 @@ func open_inventory(inventory: CardInventory):
 	get_tree().paused = true
 
 func close_inventory():
+	print("Closing inventory...")
 	hide()
 	get_tree().paused = false
 	inventory_closed.emit()
@@ -82,7 +86,7 @@ func refresh_display():
 		else:
 			inventory_slots[i].set_item(null)
 
-func _on_slot_clicked(_slot: InventorySlot):
+func _on_slot_clicked(slot: InventorySlot):
 	# Handle slot clicking if needed
 	pass
 
@@ -115,11 +119,18 @@ func _input(event):
 	if not visible:
 		return
 	
-	if event is InputEventKey and event.pressed and event.keycode == KEY_I:
-		close_inventory()
+	# Handle I key to close inventory
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_I:
+			print("I key pressed - closing inventory")
+			close_inventory()
+			get_viewport().set_input_as_handled()  # Prevent other handlers
+			return
 	
+	# Handle dragging
 	if dragged_item and drag_preview and event is InputEventMouseMotion:
 		drag_preview.global_position = event.global_position - Vector2(32, 32)
+
 
 func try_drop_item(target_slot: InventorySlot) -> bool:
 	if not dragged_item or not target_slot:
