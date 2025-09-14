@@ -21,10 +21,10 @@ func _ready() -> void:
 	# Connect collision
 	connect("body_entered", Callable(self, "_on_body_entered"))
 
-	# Optional: make sprite slightly visible for debugging
+	# Debug: make sure we can see the projectile
 	if $Sprite2D:
 		$Sprite2D.visible = true
-		print("Projectile ready at ", global_position)
+	print("Projectile spawned at ", global_position, " moving ", direction)
 
 func _physics_process(delta: float) -> void:
 	if not active:
@@ -49,3 +49,9 @@ func _on_body_entered(body: Node) -> void:
 	# Destroy projectile
 	active = false
 	queue_free()
+
+# --- Public method to set direction ---
+func set_direction(new_direction: Vector2) -> void:
+	direction = new_direction.normalized()
+	if rotate_to_direction:
+		rotation = direction.angle()
