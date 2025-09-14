@@ -39,6 +39,8 @@ extends CharacterBody2D
 @export var base_money_multiplier: float = 1.0
 @export var money_multiplier: float = 1.0
 
+@onready var inventory_ui: Control = $InventoryUI
+
 # --- Node references ---
 @onready var punch_hitbox: Area2D = $PunchHitbox
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
@@ -150,7 +152,7 @@ func _physics_process(delta: float) -> void:
 		projectile_timer = projectile_cooldown
 
 	# --- Open inventory (example with ESC key) ---
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_inventory"):
 		open_inventory_menu()
 
 	update_animation(input_dir)
@@ -231,10 +233,8 @@ func earn_money(base_amount: int) -> int:
 	return int(base_amount * money_multiplier)
 
 func open_inventory_menu():
-	# This would open your inventory UI
-	print("Opening inventory menu...")
-	get_tree().paused = true
-	# You would show your inventory UI scene here
+	if inventory_ui and card_inventory:
+		inventory_ui.open_inventory(card_inventory)
 
 # --- Animation ---
 func update_animation(input_dir: float) -> void:

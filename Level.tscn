@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=4 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=61 format=4 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_8gr2b"]
@@ -39,6 +39,7 @@
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
+[ext_resource type="PackedScene" uid="uid://cxwy28o2fnsrx" path="res://InventoryUI.tscn" id="38_ndm73"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Texture2D" uid="uid://cdij5xtw5bb1q" path="res://sr5z8f16caa261aws3(1).png" id="43_ieltc"]
 [ext_resource type="AudioStream" uid="uid://da5lk77yfhh4e" path="res://Trippy Trip Trop [4hD137dq0xg].mp3" id="47_8gr2b"]
@@ -647,6 +648,9 @@ scale = Vector2(1, 0.986558)
 zoom = Vector2(1.5, 1.5)
 limit_top = 0
 limit_bottom = 0
+
+[node name="InventoryUI" parent="Player" instance=ExtResource("38_ndm73")]
+visible = false
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(-1.61301, 37.7749)
