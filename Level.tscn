@@ -192,11 +192,11 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sweqy"]
-radius = 4.39104
+radius = 5.26934
 height = 33.2656
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2hs0m"]
-radius = 6.31849
+radius = 5.20347
 height = 33.3141
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_onrkg"]
@@ -213,7 +213,7 @@ radius = 4.03252
 height = 11.8047
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g4vxw"]
-radius = 3.22601
+radius = 4.03252
 height = 11.8047
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_608kq"]
@@ -639,22 +639,22 @@ animation = &"punch"
 speed_scale = 30.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-position = Vector2(2.25819, 0.000124216)
+position = Vector2(1.12928, -1.05712)
 scale = Vector2(1.28571, 0.773005)
 shape = SubResource("CapsuleShape2D_sweqy")
 
 [node name="PunchHitbox" type="Area2D" parent="Player"]
-position = Vector2(28.2286, 3.21418)
+position = Vector2(31.616, 3.17097)
 scale = Vector2(3.71964, 0.96015)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/PunchHitbox"]
-position = Vector2(-0.303555, -5.54947)
+position = Vector2(-0.607123, -5.50447)
 scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 modulate = Color(0.895935, 0, 0.317969, 1)
-position = Vector2(138.884, -32.7679)
+position = Vector2(138.884, -24.3116)
 scale = Vector2(1, 0.986558)
 zoom = Vector2(1.5, 1.5)
 limit_top = 0
@@ -778,7 +778,7 @@ position = Vector2(0, 2.75442)
 script = ExtResource("49_fddr8")
 
 [node name="Sprite2D" type="Sprite2D" parent="BouncingEnemy"]
-position = Vector2(67.3431, 25.9702)
+position = Vector2(66.9398, 26.3637)
 scale = Vector2(0.708683, 0.708291)
 texture = ExtResource("50_oybyf")
 
@@ -794,7 +794,7 @@ autostart = true
 [node name="Area2D" type="Area2D" parent="BouncingEnemy" groups=["Enemy"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BouncingEnemy/Area2D"]
-position = Vector2(65.73, 26.3637)
+position = Vector2(65.3268, 26.3637)
 shape = SubResource("CapsuleShape2D_g4vxw")
 
 [node name="BouncingEnemy2" type="CharacterBody2D" parent="." groups=["Enemy"]]
@@ -867,7 +867,6 @@ script = ExtResource("49_n4kpv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Goal"]
 position = Vector2(-0.427887, -2.46938)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_608kq")
 
 [node name="Sprite2D" type="Sprite2D" parent="Goal" groups=["Player"]]

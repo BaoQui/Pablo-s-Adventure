@@ -182,6 +182,8 @@ func do_damage(damage: int, hit_position: Vector2 = Vector2.ZERO):
 
 func die():
 	print("Player died!")
+	get_tree().change_scene_to_file("res://death_screen.tscn")
+	
 	# TODO: Handle respawn / game over
 
 # --- Inventory ---

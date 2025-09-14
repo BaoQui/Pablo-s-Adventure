@@ -145,10 +145,10 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		body.do_damage(10, global_position)
 
-		var knockback_strength_x: float = 500.0
+		var knockback_strength_x: float = 800.0
 		var knockback_strength_y: float = 300.0
 
-		if body.global_position.x < global_position.x:
+		if body.global_position.x > global_position.x:
 			body.velocity.x = -knockback_strength_x
 		else:
 			body.velocity.x = knockback_strength_x
