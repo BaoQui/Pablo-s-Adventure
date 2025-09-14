@@ -43,13 +43,9 @@ extends CharacterBody2D
 @export var base_money_multiplier: float = 1.0
 @export var money_multiplier: float = 1.0
 
-# --- UI References ---
-@export var inventory_ui_scene: PackedScene
-
 # --- Node references ---
 @onready var punch_hitbox: Area2D = $PunchHitbox
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
-@onready var card_inventory: CardInventory = $CardInventory
 
 # --- State variables ---
 var punch_timer: float = 0.0
@@ -64,12 +60,7 @@ var freeze_velocity: bool = false
 var stored_velocity: Vector2 = Vector2.ZERO
 var can_dash: bool = true
 
-# --- UI Variables ---
-var inventory_ui: CanvasLayer = null
-var inventory_root: Control = null
-var inventory_input_cooldown: float = 0.0
-
-# --- Card effects ---
+# --- Card effects (removed inventory-dependency) ---
 var duelist_hit_streak: int = 0
 var duelist_speed_multiplier: float = 1.0
 
@@ -82,8 +73,6 @@ func _ready() -> void:
 		punch_hitbox.body_entered.connect(_on_punch_hitbox_body_entered)
 	if not anim.animation_finished.is_connected(_on_animation_finished):
 		anim.animation_finished.connect(_on_animation_finished)
-	if card_inventory and not card_inventory.hand_changed.is_connected(_on_hand_changed):
-		card_inventory.hand_changed.connect(_on_hand_changed)
 
 	current_animation = ""
 	play_animation("idle")
@@ -92,39 +81,6 @@ func _ready() -> void:
 	# Add to Player group
 	add_to_group("Player")
 	update_health_display()
-	
-	# Setup inventory UI
-	setup_inventory_ui()
-	
-	# Test: Add some cards to the inventory
-	call_deferred("add_test_cards")
-
-func setup_inventory_ui():
-	if inventory_ui_scene:
-		inventory_ui = inventory_ui_scene.instantiate()  # This is now a CanvasLayer
-		get_tree().root.add_child(inventory_ui)
-
-		# Grab the Control child inside the CanvasLayer (your old root)
-		inventory_root = inventory_ui.get_child(0) as Control
-		if inventory_root == null:
-			push_error("InventoryUI scene is missing a Control child!")
-			return
-
-		# Now connect the signal on the Control, NOT the CanvasLayer
-		inventory_root.inventory_closed.connect(_on_inventory_closed)
-		print("Inventory UI setup complete")
-	else:
-		print("Warning: inventory_ui_scene not assigned!")
-
-func add_test_cards():
-	if card_inventory:
-		# Add a few test cards
-		for i in range(5):
-			var test_card = card_inventory.generate_random_drop()
-			card_inventory.add_card_to_inventory(test_card)
-			print("Added test card: ", test_card.card_name)
-		
-		print("Test cards added. Press I to open inventory!")
 
 func _physics_process(delta: float) -> void:
 	# --- timers ---
@@ -132,7 +88,6 @@ func _physics_process(delta: float) -> void:
 	projectile_timer = max(0.0, projectile_timer - delta)
 	dash_timer = max(0.0, dash_timer - delta)
 	dash_cooldown_timer = max(0.0, dash_cooldown_timer - delta)
-	inventory_input_cooldown = max(0.0, inventory_input_cooldown - delta)
 
 	var input_dir: float = Input.get_axis("ui_left", "ui_right")
 
@@ -198,61 +153,14 @@ func _physics_process(delta: float) -> void:
 	update_animation(input_dir)
 	move_and_slide()
 
-# Handle inventory input separately to avoid conflicts
-func _unhandled_key_input(event):
-	if event.pressed and inventory_input_cooldown <= 0.0:
-		if event.is_action_pressed("ui_inventory"):
-			print("Player detected ui_inventory input")
-			toggle_inventory()
-			inventory_input_cooldown = 0.2  # Prevent rapid toggling
-			get_viewport().set_input_as_handled()
-
-# Debug function to print current hand (can be called anytime)
-func print_current_hand_debug():
-	if not card_inventory:
-		print("No card inventory found!")
-		return
-	
-	print("=== PLAYER HAND DEBUG ===")
-	var hand_cards = card_inventory.get_hand_cards()
-	if hand_cards.size() == 0:
-		print("Hand is empty!")
-		return
-	
-	for i in range(hand_cards.size()):
-		if hand_cards[i] != null:
-			print("Hand slot %d: %s" % [i, hand_cards[i].card_name])
-			print("  - Type: %s" % _get_card_type_name(hand_cards[i].card_type))
-			print("  - Effect Value: %d" % hand_cards[i].effect_value)
-		else:
-			print("Hand slot %d: Empty" % i)
-	print("========================")
-
-func _get_card_type_name(card_type) -> String:
-	match card_type:
-		0: return "HEART"
-		1: return "CLUB" 
-		2: return "SPADE"
-		3: return "DIAMOND"
-		4: return "JOKER"
-		_: return "UNKNOWN"
-
 # --- Card Effects ---
-func _on_hand_changed():
-	print("Hand changed! Current hand contents:")
-	print_current_hand_debug()
-	_update_card_effects()
-
 func _update_card_effects():
-	if not card_inventory:
-		return
 	# Reset to base values
 	max_health = base_health
 	punch_damage = base_punch_damage
 	projectile_cooldown = base_projectile_cooldown
 	move_speed = base_move_speed
 	money_multiplier = base_money_multiplier
-	# Ensure current health doesn't exceed new max
 	current_health = min(current_health, max_health)
 
 # --- Damage ---
@@ -267,29 +175,7 @@ func do_damage(damage: int, _hit_position: Vector2 = Vector2.ZERO):
 
 func die():
 	print("Player died!")
-	if inventory_ui:
-		inventory_ui.close_inventory()
 	get_tree().change_scene_to_file("res://death_screen.tscn")
-	
-	# TODO: Handle respawn / game over
-
-# --- Inventory ---
-func toggle_inventory() -> void:
-	print("Toggle inventory called")
-	if inventory_root:
-		if inventory_root.visible:
-			print("Closing inventory")
-			inventory_root.close_inventory()
-		else:
-			print("Opening inventory")
-			inventory_root.open_inventory(card_inventory, self)
-	else:
-		print("Inventory UI not found!")
-
-
-func _on_inventory_closed():
-	print("Inventory closed callback received")
-	inventory_input_cooldown = 0.2  # Small cooldown to prevent immediate reopening
 
 # --- Animation ---
 func update_animation(input_dir: float) -> void:
@@ -321,7 +207,6 @@ func _on_animation_finished() -> void:
 # --- Punch ---
 func _on_punch_hitbox_body_entered(body: Node) -> void:
 	if body.is_in_group("Enemy") and body.has_method("take_damage"):
-		# ✅ FIX: use player position for knockback, not hitbox
 		body.take_damage(punch_damage, global_position)
 
 func punch() -> void:
@@ -368,9 +253,7 @@ func shoot_projectile() -> void:
 	projectile.max_distance = projectile_distance
 	projectile.speed = projectile_speed
 	projectile.damage = projectile_damage
-	
-	projectile.start_position = global_position
-	
+
 func update_health_display() -> void:
 	if health_label:
 		health_label.text = "HP: %d / %d" % [current_health, max_health]

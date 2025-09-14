@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=4 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=62 format=4 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_8gr2b"]
@@ -39,8 +39,6 @@
 [ext_resource type="Texture2D" uid="uid://ckvxd27cfxuk3" path="res://Individual Sprite/Run/Warrior_Run_8.png" id="30_l3lcn"]
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
-[ext_resource type="PackedScene" uid="uid://cxwy28o2fnsrx" path="res://InventoryUI.tscn" id="38_ndm73"]
-[ext_resource type="Script" uid="uid://cdaovoc72rf4t" path="res://CardInventory.gd" id="39_g4vxw"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Texture2D" uid="uid://cdij5xtw5bb1q" path="res://sr5z8f16caa261aws3(1).png" id="43_ieltc"]
 [ext_resource type="AudioStream" uid="uid://da5lk77yfhh4e" path="res://Trippy Trip Trop [4hD137dq0xg].mp3" id="47_8gr2b"]
@@ -629,9 +627,8 @@ deceleration = 6000.0
 jump_force = 400.0
 gravity = 800.0
 projectile_scene = ExtResource("2_8gr2b")
-projectile_distance = 200.0
+projectile_distance = 10000.0
 projectile_speed = 300.0
-inventory_ui_scene = ExtResource("38_ndm73")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(6.77475, -4.28557)
@@ -652,14 +649,6 @@ scale = Vector2(3.71964, 0.96015)
 position = Vector2(-0.607123, -5.50447)
 scale = Vector2(0.816734, 1.13887)
 shape = SubResource("CapsuleShape2D_2hs0m")
-
-[node name="InventoryUI" parent="Player" instance=ExtResource("38_ndm73")]
-visible = false
-scale = Vector2(0.37655, 0.365574)
-transform = Transform2D(0.37655, 0, 0, 0.365574, 0, 0)
-
-[node name="CardInventory" type="Node" parent="Player"]
-script = ExtResource("39_g4vxw")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(1.5, 1.5)
