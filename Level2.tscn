@@ -197,7 +197,7 @@ height = 33.3141
 distance = -683.002
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_msd0y"]
-size = Vector2(15.3849, 419.81)
+size = Vector2(34.0525, 1347.57)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ae8kp"]
 texture = ExtResource("41_gme1u")
@@ -1052,11 +1052,11 @@ shape = SubResource("WorldBoundaryShape2D_dkrkb")
 
 [node name="Left_wall" type="CollisionShape2D" parent="Floor"]
 modulate = Color(0.666667, 0.145098, 0.462745, 1)
-position = Vector2(-246.04, 318.917)
+position = Vector2(-254.449, 101.533)
 shape = SubResource("RectangleShape2D_msd0y")
 
 [node name="Right_Wall" type="CollisionShape2D" parent="Floor"]
-position = Vector2(2551.79, 331.469)
+position = Vector2(2550.87, 84.9748)
 shape = SubResource("RectangleShape2D_msd0y")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
