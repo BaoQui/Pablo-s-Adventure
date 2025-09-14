@@ -137,25 +137,28 @@ func get_hand_joker_effects() -> Dictionary:
 				effects[joker_name] = 1
 	return effects
 
+
+# In CardInventory.generate_random_drop() function:
 func generate_random_drop() -> Card:
-	# Your existing random card generation logic
 	var new_card = Card.new()
 	
-	# Random card generation logic here
 	var card_types = [Card.CardType.HEART, Card.CardType.CLUB, Card.CardType.SPADE, Card.CardType.DIAMOND]
 	new_card.card_type = card_types[randi() % card_types.size()]
 	new_card.effect_value = randi_range(5, 15)
 	
-	# Set card name and icon based on type
 	match new_card.card_type:
 		Card.CardType.HEART:
 			new_card.card_name = "Heart Card"
+			new_card.icon = preload("res://icons/cards/heart.png")
 		Card.CardType.CLUB:
-			new_card.card_name = "Club Card"
+			new_card.card_name = "Club Card"  
+			new_card.icon = preload("res://icons/cards/club.png")
 		Card.CardType.SPADE:
 			new_card.card_name = "Spade Card"
+			new_card.icon = preload("res://icons/cards/spade.png")
 		Card.CardType.DIAMOND:
 			new_card.card_name = "Diamond Card"
+			new_card.icon = preload("res://icons/cards/diamond.png")
 	
 	return new_card
 

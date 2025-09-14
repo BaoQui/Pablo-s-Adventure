@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=4 uid="uid://b4x3q61v00dwr"]
+[gd_scene load_steps=62 format=4 uid="uid://b4x3q61v00dwr"]
 
 [ext_resource type="Script" uid="uid://x75xjjktfw22" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://b3dlo8jdhs4sj" path="res://projectile.tscn" id="2_8gr2b"]
@@ -40,6 +40,7 @@
 [ext_resource type="Script" uid="uid://cr7w8yrnf0kaa" path="res://inventory.gd" id="33_hiqhm"]
 [ext_resource type="PackedScene" uid="uid://dmd5x0kojgurb" path="res://inventory.tscn" id="37_b88wv"]
 [ext_resource type="PackedScene" uid="uid://cxwy28o2fnsrx" path="res://InventoryUI.tscn" id="38_ndm73"]
+[ext_resource type="Script" uid="uid://cdaovoc72rf4t" path="res://CardInventory.gd" id="39_g4vxw"]
 [ext_resource type="Script" uid="uid://dulle6p7fkd7f" path="res://character_body_2d.gd" id="41_ny14h"]
 [ext_resource type="Texture2D" uid="uid://cdij5xtw5bb1q" path="res://sr5z8f16caa261aws3(1).png" id="43_ieltc"]
 [ext_resource type="AudioStream" uid="uid://da5lk77yfhh4e" path="res://Trippy Trip Trop [4hD137dq0xg].mp3" id="47_8gr2b"]
@@ -604,7 +605,7 @@ sources/1 = SubResource("TileSetAtlasSource_608kq")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_608kq"]
 size = Vector2(7.58047, 7.86977)
 
-[node name="Node2D2" type="Node2D"]
+[node name="Node2D" type="Node2D"]
 position = Vector2(159, 94)
 scale = Vector2(2.47984, 2.54137)
 
@@ -650,7 +651,14 @@ limit_top = 0
 limit_bottom = 0
 
 [node name="InventoryUI" parent="Player" instance=ExtResource("38_ndm73")]
-visible = false
+offset_left = 248.411
+offset_top = -81.3909
+offset_right = 248.411
+offset_bottom = -81.3909
+scale = Vector2(0.37655, 0.365574)
+
+[node name="CardInventory" type="Node" parent="Player"]
+script = ExtResource("39_g4vxw")
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(-1.61301, 37.7749)
@@ -677,7 +685,6 @@ shape = SubResource("RectangleShape2D_331ug")
 
 [node name="PauseMenu" parent="." instance=ExtResource("37_b88wv")]
 process_mode = 3
-visible = false
 offset_left = -59.6813
 offset_top = -34.627
 offset_right = -59.6813
