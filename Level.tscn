@@ -47,7 +47,7 @@
 [ext_resource type="Script" uid="uid://bvro0on48dsxr" path="res://bouncyenemy.gd" id="49_fddr8"]
 [ext_resource type="Script" uid="uid://dcprf2iwgi3qv" path="res://goal.gd" id="49_n4kpv"]
 [ext_resource type="Texture2D" uid="uid://bp0cad4vc5bn1" path="res://Assets/game_background_2/layers/rocks_1.png" id="49_ndm73"]
-[ext_resource type="Texture2D" uid="uid://disscd7t7auhi" path="res://jokers/savior.png" id="50_608kq"]
+[ext_resource type="Texture2D" uid="uid://bqd5ljc08ew7o" path="res://pixil-frame-0 (1).png" id="50_608kq"]
 [ext_resource type="Texture2D" uid="uid://gxmq6j52td8a" path="res://Assets/game_background_2/layers/clouds_3.png" id="50_g4vxw"]
 [ext_resource type="Texture2D" uid="uid://j0hw477eqgjd" path="res://pixil-frame-0.png" id="50_oybyf"]
 
@@ -926,6 +926,8 @@ position = Vector2(-1.31726e-05, -8.34465e-07)
 shape = SubResource("RectangleShape2D_608kq")
 
 [node name="Sprite2D" type="Sprite2D" parent="Goal" groups=["player"]]
+position = Vector2(-0.806852, 0.786956)
+scale = Vector2(0.36971, 0.28689)
 texture = ExtResource("50_608kq")
 
 [connection signal="body_entered" from="Player/PunchHitbox" to="Player" method="_on_punch_hitbox_body_entered"]
