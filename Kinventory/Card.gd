@@ -94,4 +94,4 @@ func can_stack_with(other_card: Card) -> bool:
 		return false
 	if card_type == CardType.JOKER:
 		return joker_type == other_card.joker_type
-	return true	
+	return true
